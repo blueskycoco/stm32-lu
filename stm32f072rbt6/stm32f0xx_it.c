@@ -30,6 +30,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "includes.h"
 #include "stm32f0xx_it.h"
+#include "stm32f0xx_hal.h"
+extern PCD_HandleTypeDef hpcd;
 
 /** @addtogroup STM32F0xx_HAL_Demonstrations
   * @{
@@ -92,6 +94,10 @@ void SVC_Handler(void)
 void PendSV_Handler(void)
 {
     ;
+}
+void USB_IRQHandler(void)
+{
+  HAL_PCD_IRQHandler(&hpcd);
 }
 
 

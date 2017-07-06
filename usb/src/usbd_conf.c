@@ -45,6 +45,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
+#include "stm32f0xx_conf.h"
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_cdc.h" 
@@ -70,28 +71,33 @@ PCD_HandleTypeDef hpcd;
   */
 void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 {
-  //GPIO_InitTypeDef  GPIO_InitStruct;
+  GPIO_InitTypeDef  GPIO_InitStruct;
   
   /* Enable the GPIOA clock */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
+//  __HAL_RCC_GPIOA_CLK_ENABLE();
   
   /* Configure USB DM and DP pins.
      This is optional, and maintained only for user guidance. */
-  //GPIO_InitStruct.Pin = (GPIO_PIN_11 | GPIO_PIN_12);
-  //GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  //GPIO_InitStruct.Pull = GPIO_NOPULL;
-  //GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  //GPIO_InitStruct.Alternate = GPIO_AF2_USB;
-  //HAL_GPIO_Init(GPIOA, &GPIO_InitStruct); 
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+  GPIO_InitStruct.GPIO_Pin = (GPIO_Pin_11 | GPIO_Pin_12);
+  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOA , &GPIO_InitStruct);
+  GPIO_PinAFConfig(GPIOA,GPIO_PinSource11, GPIO_AF_2);
+  GPIO_PinAFConfig(GPIOA,GPIO_PinSource12, GPIO_AF_2);
   
   /* Enable USB FS Clock */
-  __HAL_RCC_USB_CLK_ENABLE();
+  //__HAL_RCC_USB_CLK_ENABLE();
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
   
   /* Set USB FS Interrupt priority */
   //HAL_NVIC_SetPriority(USB_IRQn, 3, 0);
+  NVIC_SetPriority(USB_IRQn, 3);
   
   /* Enable USB FS Interrupt */
   //HAL_NVIC_EnableIRQ(USB_IRQn);
+  NVIC_EnableIRQ(USB_IRQn);
 }
 
 /**
@@ -102,7 +108,8 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
 {
   /* Disable USB FS Clock */
-  __HAL_RCC_USB_CLK_DISABLE();
+  //__HAL_RCC_USB_CLK_DISABLE();
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, DISABLE);
 }
 
 /*******************************************************************************
