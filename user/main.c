@@ -358,7 +358,7 @@ void Systick_Init(void)
 
 
 
-
+extern void usb_start(void);
 /********************************************************************************
 函数名称: main()
 功    能: 主函数入口
@@ -484,7 +484,7 @@ int main(void)
 #if (DEBUG_SUPPORT == 1)
     APP_printf("\n\r\n\r app_run...... \n\r");
 #endif
-
+	  usb_start();
     while(1)
     {
         #if 1
