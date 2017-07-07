@@ -485,12 +485,17 @@ int main(void)
     APP_printf("\n\r\n\r app_run...... \n\r");
 #endif
 	  usb_start();
+	  uint8_t usb_buf[8] = {1,2,3,4,5,6,7,8};
     while(1)
     {
         #if 1
         if (0)  break;
         #endif
-
+		if (usb_send(usb_buf,8) == 1)
+			APP_printf("usb send ok\n");
+		else
+			APP_printf("usb send failed\n");
+			
         #if (DEBUG_SUPPORT == 1)
             TERMINAML_Operation();
         #endif

@@ -366,7 +366,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,   STM32F072,   IFLASH_STM32F0_P1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\;..\lib;..\lib\inc;..\lib\src;..\startup;..\user;..\stm32f072rbt6</IncludePath>
+              <IncludePath>..\;..\..\;..\lib;..\lib\inc;..\lib\src;..\startup;..\user;..\stm32f072rbt6;..\usb\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

@@ -10,3 +10,9 @@ void usb_start(void)
   	USBD_CDC_RegisterInterface(&USBD_Device, &USBD_CDC_fops);
   	USBD_Start(&USBD_Device);
 }
+
+int usb_send(uint8_t *buf, int len)
+{
+    USBD_CDC_SetTxBuffer(&USBD_Device, (uint8_t*)buf, len);    
+    return USBD_CDC_TransmitPacket(&USBD_Device) == USBD_OK;
+}

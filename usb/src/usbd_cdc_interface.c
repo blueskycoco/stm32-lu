@@ -48,7 +48,8 @@
 #include "usbd_desc.h"
 #include "usbd_cdc.h" 
 #include "usbd_cdc_interface.h"
-
+#include "app_types.h"
+#include "app_debug.h"
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
   * @{
   */
@@ -324,6 +325,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 static int8_t CDC_Itf_Receive(uint8_t* Buf, uint32_t *Len)
 {
   //HAL_UART_Transmit_DMA(&UartHandle, Buf, *Len);
+  int i = 0;
+  for (i = 0; i < *Len; i++)
+  	  APP_printf(">%x \r\n", Buf[i]);
+  usb_send(Buf, *Len);
   return (USBD_OK);
 }
 #if 0
