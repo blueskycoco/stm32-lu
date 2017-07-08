@@ -44,7 +44,6 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "app_types.h"
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx_conf.h"
 #include "usbd_core.h"
@@ -104,7 +103,6 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
   /* Enable USB FS Interrupt */
   //HAL_NVIC_EnableIRQ(USB_IRQn);
   NVIC_EnableIRQ(USB_IRQn);
-	//APP_printf("in 7 HAL_PCD_MspInit\r\n");
 }
 
 /**
@@ -116,7 +114,6 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
 {
   /* Disable USB FS Clock */
   //__HAL_RCC_USB_CLK_DISABLE();
-	//APP_printf("in HAL_PCD_MspDeInit\r\n");
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, DISABLE);
 }
 
@@ -131,7 +128,6 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
 {
-	//APP_printf("in HAL_PCD_SetupStageCallback\r\n");
   USBD_LL_SetupStage((USBD_HandleTypeDef*)hpcd->pData, (uint8_t *)hpcd->Setup);
 }
 
@@ -143,7 +139,6 @@ void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
-	//APP_printf("in HAL_PCD_DataOutStageCallback\r\n");
   USBD_LL_DataOutStage((USBD_HandleTypeDef*)hpcd->pData, epnum, hpcd->OUT_ep[epnum].xfer_buff);
 }
 
@@ -155,7 +150,6 @@ void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
-	//APP_printf("in HAL_PCD_DataInStageCallback\r\n");
   USBD_LL_DataInStage((USBD_HandleTypeDef*)hpcd->pData, epnum, hpcd->IN_ep[epnum].xfer_buff);
 }
 
@@ -166,7 +160,6 @@ void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
 {
-	//APP_printf("in HAL_PCD_SOFCallback\r\n");
   USBD_LL_SOF((USBD_HandleTypeDef*)hpcd->pData);
 }
 
@@ -177,7 +170,6 @@ void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
 {   
-	//APP_printf("in HAL_PCD_ResetCallback\r\n");
   USBD_LL_SetSpeed((USBD_HandleTypeDef*)hpcd->pData, USBD_SPEED_FULL);
   /* Reset Device */
   USBD_LL_Reset((USBD_HandleTypeDef*)hpcd->pData);
@@ -190,7 +182,6 @@ void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
 {
-	//APP_printf("in HAL_PCD_SuspendCallback\r\n");
 }
 
 /**
@@ -200,7 +191,6 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd)
 {
-	//APP_printf("in HAL_PCD_ResumeCallback\r\n");
 }
 
 /**
@@ -211,7 +201,6 @@ void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ISOOUTIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
-	//APP_printf("in HAL_PCD_ISOOUTIncompleteCallback\r\n");
   USBD_LL_IsoOUTIncomplete((USBD_HandleTypeDef*)hpcd->pData, epnum);
 }
 
@@ -223,7 +212,6 @@ void HAL_PCD_ISOOUTIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_ISOINIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
-	//APP_printf("in HAL_PCD_ISOINIncompleteCallback\r\n");
   USBD_LL_IsoINIncomplete((USBD_HandleTypeDef*)hpcd->pData, epnum);
 }
 
@@ -234,7 +222,6 @@ void HAL_PCD_ISOINIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *hpcd)
 {
-	//APP_printf("in HAL_PCD_ConnectCallback\r\n");
   USBD_LL_DevConnected((USBD_HandleTypeDef*)hpcd->pData);
 }
 
@@ -245,7 +232,6 @@ void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 {
-	//APP_printf("in HAL_PCD_DisconnectCallback\r\n");
   USBD_LL_DevDisconnected((USBD_HandleTypeDef*)hpcd->pData);
 }
 
@@ -271,7 +257,6 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
   pdev->pData = &hpcd;
   /* Initialize LL Driver */
   HAL_PCD_Init(&hpcd);
-  //APP_printf("USBD_LL_Init\r\n");
   HAL_PCDEx_PMAConfig(&hpcd , 0x00 , PCD_SNG_BUF, 0x40);
   HAL_PCDEx_PMAConfig(&hpcd , 0x80 , PCD_SNG_BUF, 0x80);
   HAL_PCDEx_PMAConfig(&hpcd , CDC_IN_EP , PCD_SNG_BUF, 0xC0);  
@@ -288,7 +273,6 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
   */
 USBD_StatusTypeDef USBD_LL_DeInit(USBD_HandleTypeDef *pdev)
 {
-	//APP_printf("in USBD_LL_DeInit\r\n");
   HAL_PCD_DeInit((PCD_HandleTypeDef*)pdev->pData);
   return USBD_OK;
 }
@@ -300,7 +284,6 @@ USBD_StatusTypeDef USBD_LL_DeInit(USBD_HandleTypeDef *pdev)
   */
 USBD_StatusTypeDef USBD_LL_Start(USBD_HandleTypeDef *pdev)
 {
-	//APP_printf("in USBD_LL_Start\r\n");
   HAL_PCD_Start((PCD_HandleTypeDef*)pdev->pData);
   return USBD_OK;
 }
@@ -312,7 +295,6 @@ USBD_StatusTypeDef USBD_LL_Start(USBD_HandleTypeDef *pdev)
   */
 USBD_StatusTypeDef USBD_LL_Stop(USBD_HandleTypeDef *pdev)
 {
-	//APP_printf("in USBD_LL_Stop\r\n");
   HAL_PCD_Stop((PCD_HandleTypeDef*)pdev->pData);
   return USBD_OK;
 }
@@ -330,7 +312,6 @@ USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *pdev,
                                   uint8_t ep_type,
                                   uint16_t ep_mps)
 {
-	//APP_printf("in USBD_LL_OpenEP\r\n");
   HAL_PCD_EP_Open((PCD_HandleTypeDef*)pdev->pData,
                   ep_addr,
                   ep_mps,
@@ -347,7 +328,6 @@ USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *pdev,
   */
 USBD_StatusTypeDef USBD_LL_CloseEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
-	//APP_printf("in USBD_LL_CloseEP\r\n");
   HAL_PCD_EP_Close((PCD_HandleTypeDef*)pdev->pData, ep_addr);
   return USBD_OK;
 }
@@ -360,7 +340,6 @@ USBD_StatusTypeDef USBD_LL_CloseEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef USBD_LL_FlushEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
-	//APP_printf("in USBD_LL_FlushEP\r\n");
   HAL_PCD_EP_Flush((PCD_HandleTypeDef*)pdev->pData, ep_addr);
   return USBD_OK;
 }
@@ -373,7 +352,6 @@ USBD_StatusTypeDef USBD_LL_FlushEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef USBD_LL_StallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
-	//APP_printf("in USBD_LL_StallEP\r\n");
   HAL_PCD_EP_SetStall((PCD_HandleTypeDef*)pdev->pData, ep_addr);
   return USBD_OK;
 }
@@ -386,7 +364,6 @@ USBD_StatusTypeDef USBD_LL_StallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef USBD_LL_ClearStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
-	//APP_printf("in USBD_LL_ClearStallEP\r\n");
   HAL_PCD_EP_ClrStall((PCD_HandleTypeDef*)pdev->pData, ep_addr);
   return USBD_OK; 
 }
@@ -399,7 +376,6 @@ USBD_StatusTypeDef USBD_LL_ClearStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_add
   */
 uint8_t USBD_LL_IsStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
-	//APP_printf("in USBD_LL_IsStallEP\r\n");
   PCD_HandleTypeDef *hpcd = (PCD_HandleTypeDef*)pdev->pData;
   
   if((ep_addr & 0x80) == 0x80)
@@ -420,7 +396,6 @@ uint8_t USBD_LL_IsStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef USBD_LL_SetUSBAddress(USBD_HandleTypeDef *pdev, uint8_t dev_addr)
 {
-	//APP_printf("in USBD_LL_SetUSBAddress\r\n");
   HAL_PCD_SetAddress((PCD_HandleTypeDef*)pdev->pData, dev_addr);
   return USBD_OK; 
 }
@@ -438,7 +413,6 @@ USBD_StatusTypeDef USBD_LL_Transmit(USBD_HandleTypeDef *pdev,
                                     uint8_t *pbuf,
                                     uint16_t size)
 {
-	//APP_printf("in USBD_LL_Transmit\r\n");
   HAL_PCD_EP_Transmit((PCD_HandleTypeDef*)pdev->pData, ep_addr, pbuf, size);
   return USBD_OK;
 }
@@ -456,7 +430,6 @@ USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev,
                                           uint8_t *pbuf,
                                           uint16_t size)
 {
-	//APP_printf("in USBD_LL_PrepareReceive\r\n");
   HAL_PCD_EP_Receive((PCD_HandleTypeDef*)pdev->pData, ep_addr, pbuf, size);
   return USBD_OK;
 }
@@ -469,7 +442,6 @@ USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev,
   */
 uint32_t USBD_LL_GetRxDataSize(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
-	//APP_printf("in USBD_LL_GetRxDataSize\r\n");
   return HAL_PCD_EP_GetRxCount((PCD_HandleTypeDef*)pdev->pData, ep_addr);
 }
 
