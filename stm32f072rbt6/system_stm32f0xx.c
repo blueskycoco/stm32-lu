@@ -280,7 +280,7 @@ void SystemInit (void)
     RCC->CR |= (uint32_t)0x00000001;
 
     /* Reset SW[1:0], HPRE[3:0], PPRE[2:0], ADCPRE and MCOSEL[3:0] bits MCOPRE[2:0] */
-    RCC->CFGR &= (uint32_t)0x80FFB80C;
+    RCC->CFGR &= (uint32_t)0x08FFB80C;
 
     /* Reset HSEON, CSSON and PLLON bits */
     RCC->CR &= (uint32_t)0xFEF6FFFF;
@@ -289,7 +289,7 @@ void SystemInit (void)
     RCC->CR &= (uint32_t)0xFFFBFFFF;
 
     /* Reset PLLSRC, PLLXTPRE and PLLMUL[3:0] bits */
-    RCC->CFGR &= (uint32_t)0xFFC07FFF;
+    RCC->CFGR &= (uint32_t)0xFFC0FFFF;
 
     /* Reset PREDIV1[3:0] bits */
     RCC->CFGR2 &= (uint32_t)0xFFFFFFF0;
@@ -337,7 +337,7 @@ static void SetSysClock(void)
         //                                    0x00018000          0x00020000         0x003C0000
         RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
         //                             0x00008000                 0x00000000            0x00100000
-        RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSI_PREDIV | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL6);
+        RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSI_DIV2 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL12);
     #endif /* PLL_SOURCE_HSI */ 
 
     /* Enable PLL */

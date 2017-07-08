@@ -491,10 +491,10 @@ int main(void)
         #if 1
         if (0)  break;
         #endif
-		if (usb_send(usb_buf,8) == 1)
-			APP_printf("usb send ok\n");
-		else
-			APP_printf("usb send failed\n");
+		//if (usb_send(usb_buf,8) == 1)
+		//	APP_printf("usb send ok\n");
+		//else
+		//	APP_printf("usb send failed\n");
 			
         #if (DEBUG_SUPPORT == 1)
             TERMINAML_Operation();

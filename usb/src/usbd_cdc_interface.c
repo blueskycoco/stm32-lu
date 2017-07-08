@@ -225,6 +225,14 @@ static int8_t CDC_Itf_Control (uint8_t cmd, uint8_t* pbuf, uint16_t length)
     LineCoding.paritytype = pbuf[5];
     LineCoding.datatype   = pbuf[6];
     
+    APP_printf("LineCoding.bitrate %d\r\n\
+    		LineCoding.format %d\r\n\
+    		LineCoding.paritytype %d\r\n\
+    		LineCoding.datatype %d\r\n",
+    		LineCoding.bitrate,
+    		LineCoding.format,
+    		LineCoding.paritytype,
+    		LineCoding.datatype);
     /* Set the new configuration */
     //ComPort_Config();
     break;
@@ -325,11 +333,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 static int8_t CDC_Itf_Receive(uint8_t* Buf, uint32_t *Len)
 {
   //HAL_UART_Transmit_DMA(&UartHandle, Buf, *Len);
-  int i = 0;
-  for (i = 0; i < *Len; i++)
-  	  APP_printf(">%x \r\n", Buf[i]);
-  usb_send(Buf, *Len);
-  return (USBD_OK);
+  //int i = 0;
+  //for (i = 0; i < *Len; i++)
+  //	  APP_printf(">%x \r\n", Buf[i]);
+ 	//uint8_t buf[64]={0};
+ 	//memcpy(buf, Buf, *Len);
+ 	//usb_send(buf, *Len);
+ 	APP_printf("*len %d\r\n",*Len);
+  	return (USBD_OK);
 }
 #if 0
 
