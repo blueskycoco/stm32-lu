@@ -335,11 +335,11 @@ static int8_t CDC_Itf_Receive(uint8_t* Buf, uint32_t *Len)
   //HAL_UART_Transmit_DMA(&UartHandle, Buf, *Len);
   //int i = 0;
   //for (i = 0; i < *Len; i++)
-  //	  APP_printf(">%x \r\n", Buf[i]);
- 	//uint8_t buf[64]={0};
- 	//memcpy(buf, Buf, *Len);
- 	//usb_send(buf, *Len);
- 	APP_printf("*len %d\r\n",*Len);
+  //	  APP_printf("%c", Buf[i]);
+ 	uint8_t buf[64]={0};
+ 	memcpy(buf, Buf, *Len);
+ 	usb_send(buf, *Len);
+ 	USBD_CDC_ReceivePacket(&USBD_Device);
   	return (USBD_OK);
 }
 #if 0
