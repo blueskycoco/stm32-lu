@@ -444,13 +444,13 @@ int main(void)
 
 #if (SPI_SUPPORT == 1)
     ConfigureSPI();
-    uint8_t input[4096] = {0};
-    uint8_t output[4096] = {0};
-    for (i=0; i<4096; i++)
-    	input[i] = (4096-i)%256;
-    spi_flash_test(495,input,4096,output);
+    uint8_t input[256] = {0};
+    uint8_t output[256] = {0};
+    for (i=0; i<256; i++)
+    	input[i] = (256-i)%256;
+    spi_flash_test(495,input,256,output);
     APP_printf("output is :\r\n");
-    for (i=0; i<4096; i++)
+    for (i=0; i<256; i++)
 	{
 		APP_printf("%02x ",output[i]);
 		if ((i+1)%16 == 0)
