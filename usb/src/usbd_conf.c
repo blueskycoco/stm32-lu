@@ -61,9 +61,6 @@ PCD_HandleTypeDef hpcd;
 /*******************************************************************************
                        PCD BSP Routines
 *******************************************************************************/
-#define __HAL_RCC_GPIOA_CLK_ENABLE()   (RCC->AHBENR|=(RCC_AHBENR_GPIOAEN))
-#define __HAL_RCC_USB_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_USBEN))
-#define __HAL_RCC_USB_CLK_DISABLE()    (RCC->APB1ENR &= ~(RCC_APB1ENR_USBEN))
 /**
   * @brief  Initializes the PCD MSP.
   * @param  hpcd: PCD handle
@@ -72,9 +69,6 @@ PCD_HandleTypeDef hpcd;
 void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 {
   GPIO_InitTypeDef  GPIO_InitStruct;
-  
-  /* Enable the GPIOA clock */
-//  __HAL_RCC_GPIOA_CLK_ENABLE();
   
   /* Configure USB DM and DP pins.
      This is optional, and maintained only for user guidance. */
@@ -92,16 +86,13 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
   GPIO_PinAFConfig(GPIOA,GPIO_PinSource12, GPIO_AF_2);
   
   /* Enable USB FS Clock */
-  //__HAL_RCC_USB_CLK_ENABLE();
   RCC_USBCLKConfig(RCC_USBCLK_PLLCLK);
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, ENABLE);
   
   /* Set USB FS Interrupt priority */
-  //HAL_NVIC_SetPriority(USB_IRQn, 3, 0);
   NVIC_SetPriority(USB_IRQn, 3);
   
   /* Enable USB FS Interrupt */
-  //HAL_NVIC_EnableIRQ(USB_IRQn);
   NVIC_EnableIRQ(USB_IRQn);
 }
 
@@ -113,7 +104,6 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
 {
   /* Disable USB FS Clock */
-  //__HAL_RCC_USB_CLK_DISABLE();
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USB, DISABLE);
 }
 

@@ -444,6 +444,18 @@ int main(void)
 
 #if (SPI_SUPPORT == 1)
     ConfigureSPI();
+    uint8_t input[64] = {0};
+    uint8_t output[64] = {0};
+    for (i=0; i<64; i++)
+    	input[i] = i;
+    spi_flash_test(0,input,64,output);
+    APP_printf("output is :\r\n");
+    for (i=0; i<64; i++)
+	{
+		APP_printf("%03d ",output[i]);
+		if ((i+1)%16 == 0)
+			APP_printf("\r\n");
+	}
 #endif
 
 #if (FLASH_SUPPORT == 1)

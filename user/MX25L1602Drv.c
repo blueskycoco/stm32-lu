@@ -169,8 +169,8 @@ FLASH_ID Flash_Read_ID(void)
 
     #if (DEBUG_SUPPORT == 1)
         APP_printf("\n\r    Flash_id.MXIC_ID:0x%X ", Flash_id.MXIC_ID);
-        APP_printf("\n\r    Flash_id.MemType_ID:0x%X ", Flash_id.MXIC_ID);
-        APP_printf("\n\r    Flash_id.MemDensity_ID:0x%X ", Flash_id.MXIC_ID);
+        APP_printf("\n\r    Flash_id.MemType_ID:0x%X ", Flash_id.MemType_ID);
+        APP_printf("\n\r    Flash_id.MemDensity_ID:0x%X ", Flash_id.MemDensity_ID);
     #endif
 
     return Flash_id;
@@ -340,11 +340,12 @@ void Flash_ReadBytes(uint32 data_addr,uint8* ptdata, uint16 count)
     uint8 Data_Addr_H;
     uint8 Data_Addr_M;
     uint8 Data_Addr_L;
+	uint8 tmp;
 
     Data_Addr_H = (uint8)(((data_addr*0x10000)&0x00ff0000)>>16);
     Data_Addr_M = (uint8)(((data_addr*0x10000)&0x0000ff00)>>8);
     Data_Addr_L = (uint8)((data_addr*0x10000)&0x000000ff);
-
+	Flash_Write_Disable();
     FLASH_ENABLE;
 
     SPI2_WriteRead_Data(SPI_Flash_Fast_Read);
@@ -355,7 +356,10 @@ void Flash_ReadBytes(uint32 data_addr,uint8* ptdata, uint16 count)
 
     for(;count!=0;count--)
     {
-        *(ptdata++) = SPI2_WriteRead_Data(DummyData);
+        tmp = SPI2_WriteRead_Data(DummyData);
+        //if (tmp != 0xff)
+        //	APP_printf("GOT %x\r\n", tmp);
+        *(ptdata++) = tmp;
     }
 
     FLASH_DISABLE;
