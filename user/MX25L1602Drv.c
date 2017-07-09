@@ -103,7 +103,7 @@ void SSP_EnableCS(uint8 type, uint8 enable);
 
 //----------- Flash Status Port Definition ----------
 
-#define C_Flash_Busy	                0x01
+#define C_Flash_Busy	                0x0001
 #define C_Flash_WEL	                    0x02	    // Write Enable Latch
 #define C_Flash_BP0	                    0x04
 #define C_Flash_BP1	                    0x08
@@ -147,11 +147,10 @@ void SPI2_Init(void)
 uint8 SPI2_WriteRead_Data(uint8 dat)
 {
     while((SPI2->SR&SPI_I2S_FLAG_TXE) == RESET);	//TX Buffer is empty
-    SPI2->DR = dat;	//sent the TX Buffer's data out
+	SPI_SendData8(SPI2,dat);
 
     while((SPI2->SR&SPI_I2S_FLAG_RXNE) == RESET); //RX Buffer is not empty
-    return(SPI2->DR);	//return the RX Buffer's data
-
+	return SPI_ReceiveData8(SPI2);
 }
 
 FLASH_ID Flash_Read_ID(void)
@@ -194,7 +193,7 @@ void Flash_Write_Disable(void)
     FLASH_DISABLE;
 }
 
-uint8 Flash_Read_Status_Register(void)
+uint16 Flash_Read_Status_Register(void)
 {
     uint8 data;
 
@@ -250,7 +249,7 @@ void Flash_Block_Erase(uint16 Block_idx)
     uint8 Block_Addr_M;
     uint8 Block_Addr_L;
 
-    Block_Addr_H = (uint8)(((Block_idx*0x10000)&0x00ff0000)>>16);
+    Block_Addr_H = (uint8)(((Block_idx*0x1000)&0x00ff0000)>>16);
     Block_Addr_M = 0x00;
     Block_Addr_L = 0x00;
 
@@ -287,9 +286,9 @@ void Flash_WriteByte(uint32 data_addr, uint8 data)
     uint8 Data_Addr_M;
     uint8 Data_Addr_L;
 
-    Data_Addr_H = (uint8)(((data_addr*0x10000)&0x00ff0000)>>16);
-    Data_Addr_M = (uint8)(((data_addr*0x10000)&0x0000ff00)>>8);
-    Data_Addr_L = (uint8)((data_addr*0x10000)&0x000000ff);
+    Data_Addr_H = (uint8)(((data_addr*0x1000)&0x00ff0000)>>16);
+    Data_Addr_M = (uint8)(((data_addr*0x1000)&0x0000ff00)>>8);
+    Data_Addr_L = (uint8)((data_addr*0x1000)&0x000000ff);
 
     Flash_Write_Enable();
 
@@ -311,28 +310,32 @@ void Flash_WriteBytes(uint32 data_addr, uint8* ptdata, uint16 count)
     uint8 Data_Addr_H;
     uint8 Data_Addr_M;
     uint8 Data_Addr_L;
+	int i,index;
 
-    Data_Addr_H = (uint8)(((data_addr*0x10000)&0x00ff0000)>>16);
-    Data_Addr_M = (uint8)(((data_addr*0x10000)&0x0000ff00)>>8);
-    Data_Addr_L = (uint8)((data_addr*0x10000)&0x000000ff);
+	for (index=0; index<count/256; index++) {
+	    Data_Addr_H = (uint8)(((data_addr*0x1000)&0x00ff0000)>>16);
+	    Data_Addr_M = (uint8)(((data_addr*0x1000)&0x0000ff00)>>8);
+	    Data_Addr_L = (uint8)((data_addr*0x1000)&0x000000ff);
+	    Flash_Write_Enable();
 
-    Flash_Write_Enable();
+	    FLASH_ENABLE;
 
-    FLASH_ENABLE;
+	    SPI2_WriteRead_Data(SPI_Flash_Page_Program);
+	    SPI2_WriteRead_Data(Data_Addr_H);
+	    SPI2_WriteRead_Data(Data_Addr_M);
+	    SPI2_WriteRead_Data(Data_Addr_L);
 
-    SPI2_WriteRead_Data(SPI_Flash_Page_Program);
-    SPI2_WriteRead_Data(Data_Addr_H);
-    SPI2_WriteRead_Data(Data_Addr_M);
-    SPI2_WriteRead_Data(Data_Addr_L);
+	    for(i=0;i<256;i++)
+	    {
+	        SPI2_WriteRead_Data(ptdata[i]);
+	    }
 
-    for(;count!=0;count--)
-    {
-        SPI2_WriteRead_Data(*(ptdata++));
-    }
+	    FLASH_DISABLE;
+		data_addr += 256;		  
+		ptdata += 256;
 
-    FLASH_DISABLE;
-
-    while(Flash_Read_Status_Register()&C_Flash_Busy != RESET);
+	    while(Flash_Read_Status_Register()&C_Flash_Busy != RESET);
+	}
 }
 
 void Flash_ReadBytes(uint32 data_addr,uint8* ptdata, uint16 count)
@@ -341,28 +344,31 @@ void Flash_ReadBytes(uint32 data_addr,uint8* ptdata, uint16 count)
     uint8 Data_Addr_M;
     uint8 Data_Addr_L;
 	uint8 tmp;
+	int i,index;
+	
+	for (index=0; index<count/256; index++) {
+	    Data_Addr_H = (uint8)(((data_addr*0x1000)&0x00ff0000)>>16);
+	    Data_Addr_M = (uint8)(((data_addr*0x1000)&0x0000ff00)>>8);
+	    Data_Addr_L = (uint8)((data_addr*0x1000)&0x000000ff);
+		
+	    FLASH_ENABLE;
 
-    Data_Addr_H = (uint8)(((data_addr*0x10000)&0x00ff0000)>>16);
-    Data_Addr_M = (uint8)(((data_addr*0x10000)&0x0000ff00)>>8);
-    Data_Addr_L = (uint8)((data_addr*0x10000)&0x000000ff);
-	Flash_Write_Disable();
-    FLASH_ENABLE;
+	    SPI2_WriteRead_Data(SPI_Flash_Fast_Read);
+	    SPI2_WriteRead_Data(Data_Addr_H);
+	    SPI2_WriteRead_Data(Data_Addr_M);
+	    SPI2_WriteRead_Data(Data_Addr_L);
+	    SPI2_WriteRead_Data(DummyData);
 
-    SPI2_WriteRead_Data(SPI_Flash_Fast_Read);
-    SPI2_WriteRead_Data(Data_Addr_H);
-    SPI2_WriteRead_Data(Data_Addr_M);
-    SPI2_WriteRead_Data(Data_Addr_L);
-    SPI2_WriteRead_Data(DummyData);
+	    for(i=0;i<256;i++)
+	    {
+	        ptdata[i] = SPI2_WriteRead_Data(DummyData);
+	    }
 
-    for(;count!=0;count--)
-    {
-        tmp = SPI2_WriteRead_Data(DummyData);
-        //if (tmp != 0xff)
-        //	APP_printf("GOT %x\r\n", tmp);
-        *(ptdata++) = tmp;
-    }
-
-    FLASH_DISABLE;
+	    FLASH_DISABLE;
+		
+		data_addr += 256;		  
+		ptdata += 256;
+	}
 }
 
 uint8 Flash_ReadByte(uint32 data_addr)
@@ -372,9 +378,9 @@ uint8 Flash_ReadByte(uint32 data_addr)
     uint8 Data_Addr_M;
     uint8 Data_Addr_L;
 
-    Data_Addr_H = (uint8)(((data_addr*0x10000)&0x00ff0000)>>16);
-    Data_Addr_M = (uint8)(((data_addr*0x10000)&0x0000ff00)>>8);
-    Data_Addr_L = (uint8)((data_addr*0x10000)&0x000000ff);
+    Data_Addr_H = (uint8)(((data_addr*0x1000)&0x00ff0000)>>16);
+    Data_Addr_M = (uint8)(((data_addr*0x1000)&0x0000ff00)>>8);
+    Data_Addr_L = (uint8)((data_addr*0x1000)&0x000000ff);
 
     FLASH_ENABLE;
 
@@ -541,7 +547,7 @@ void SSP_Init(void)
     SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
     SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
     SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;   
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;          // SPI_BaudRatePrescaler_2
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;          // SPI_BaudRatePrescaler_2
     SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB; 
     SPI_InitStructure.SPI_CRCPolynomial = 7; 				
     SPI_Init(SPI_PORT, &SPI_InitStructure);

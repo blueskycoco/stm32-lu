@@ -60,7 +60,6 @@ void ConfigureSPI(void)
     SSP_Init();
 
     Flash_Read_ID();
-    
 #if 0
     MX25L1602_RdID(Jedec_ID, &GuiChipID);                               /* 读取Flash器件ID              */
     GuiChipID &= ~0xff000000;                                           /* 仅保留低24位数据             */
@@ -76,9 +75,8 @@ void ConfigureSPI(void)
 }
 uint8_t spi_flash_test(uint8_t sector, uint8_t *input, int len, uint8_t *output)
 {
-	//Flash_Sector_Erase(sector);
-	Flash_Chip_Erase();
-//	Flash_WriteBytes(sector,input,len);
+	Flash_Sector_Erase(sector);
+	Flash_WriteBytes(sector,input,len);
 	Flash_ReadBytes(sector,output,len);
 	return 0;
 }
