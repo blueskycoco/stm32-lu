@@ -146,11 +146,17 @@ void SPI2_Init(void)
 
 uint8 SPI2_WriteRead_Data(uint8 dat)
 {
+	volatile int i=0;
     while((SPI2->SR&SPI_I2S_FLAG_TXE) == RESET);	//TX Buffer is empty
-	SPI_SendData8(SPI2,dat);
+		SPI_SendData8(SPI2,dat);
 
-    while((SPI2->SR&SPI_I2S_FLAG_RXNE) == RESET); //RX Buffer is not empty
-	return SPI_ReceiveData8(SPI2);
+    while((SPI2->SR&SPI_I2S_FLAG_RXNE) == RESET)
+		{
+			i++;
+			if(i>100) 
+				break;
+		}
+		return SPI_ReceiveData8(SPI2);
 }
 
 FLASH_ID Flash_Read_ID(void)
