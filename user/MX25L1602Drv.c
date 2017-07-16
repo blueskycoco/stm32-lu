@@ -150,12 +150,7 @@ uint8 SPI2_WriteRead_Data(uint8 dat)
     while((SPI2->SR&SPI_I2S_FLAG_TXE) == RESET);	//TX Buffer is empty
 		SPI_SendData8(SPI2,dat);
 
-    while((SPI2->SR&SPI_I2S_FLAG_RXNE) == RESET)
-		{
-			i++;
-			if(i>100) 
-				break;
-		}
+    while((SPI2->SR&SPI_I2S_FLAG_RXNE) == RESET);
 		return SPI_ReceiveData8(SPI2);
 }
 
@@ -559,7 +554,7 @@ void SSP_Init(void)
     SPI_Init(SPI_PORT, &SPI_InitStructure);
 
     //SPI_NSSInternalSoftwareConfig(SPI_PORT, SPI_NSSInternalSoft_Set);
-    //SPI_RxFIFOThresholdConfig(SPI_PORT, SPI_RxFIFOThreshold_QF);
+    SPI_RxFIFOThresholdConfig(SPI_PORT, SPI_RxFIFOThreshold_QF);
 
     SPI_Cmd(SPI_PORT, ENABLE); /* SPI enable */
 }
