@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx.h
   * @author  MCD Application Team
-  * @version V1.3.2
-  * @date    27-March-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   CMSIS Cortex-M0 Device Peripheral Access Layer Header File. 
   *          This file contains all the peripheral register's definitions, bits 
   *          definitions and memory mapping for STM32F0xx devices.  
@@ -65,13 +65,20 @@
    application 
   */
 
-#if !defined (STM32F030) && !defined (STM32F031) && !defined (STM32F051) && !defined (STM32F072) && !defined (STM32F042)
+#if !defined (STM32F030) && !defined (STM32F031) && !defined (STM32F051) && \
+    !defined (STM32F072) && !defined (STM32F042) && !defined (STM32F091) && \
+    !defined (STM32F070xB) && !defined (STM32F070x6) && !defined (STM32F030xC)
   /* #define STM32F030 */   
   /* #define STM32F031 */   
   /* #define STM32F051 */   
-  /* #define STM32F072 */   
-  /* #define STM32F042 */   
-#endif
+  /* #define STM32F072 */
+  /* #define STM32F070xB */   
+  /* #define STM32F042 */
+  /* #define STM32F070x6 */   
+  /* #define STM32F091 */
+  /* #define STM32F030xC */  
+#endif /* STM32F030 || STM32F031 || STM32F051 || STM32F072 || STM32F042 || STM32F091 ||
+          STM32F070xB || STM32F070x6 || STM32F030xC */
 
 /*  Tip: To avoid modifying this file each time you need to switch between these
         devices, you can define the device in your toolchain compiler preprocessor.
@@ -98,9 +105,12 @@
 #endif /* STM32F030X8 or  STM32F030X6 */
 
 
-#if !defined (STM32F030) && !defined (STM32F031) && !defined (STM32F051) && !defined (STM32F072) && !defined (STM32F042)
+#if !defined (STM32F030) && !defined (STM32F031) && !defined (STM32F051) && \
+    !defined (STM32F072) && !defined (STM32F042) && !defined (STM32F091) && \
+    !defined (STM32F070xB) && !defined (STM32F070x6) && !defined (STM32F030xC)
  #error "Please select first the target STM32F0xx device used in your application (in stm32f0xx.h file)"
-#endif
+#endif /* STM32F030 || STM32F031 || STM32F051 || STM32F072 || STM32F042 || STM32F091 ||
+          STM32F070xB || STM32F070x6 || STM32F030xC */
 
 #if !defined  USE_STDPERIPH_DRIVER
 /**
@@ -167,11 +177,11 @@
 #endif /* LSE_VALUE */
 
 /**
- * @brief STM32F0xx Standard Peripheral Library version number V1.3.2
+ * @brief STM32F0xx Standard Peripheral Library version number V1.4.0
    */
 #define __STM32F0XX_STDPERIPH_VERSION_MAIN   (0x01) /*!< [31:24] main version */
-#define __STM32F0XX_STDPERIPH_VERSION_SUB1   (0x03) /*!< [23:16] sub1 version */
-#define __STM32F0XX_STDPERIPH_VERSION_SUB2   (0x01) /*!< [15:8]  sub2 version */
+#define __STM32F0XX_STDPERIPH_VERSION_SUB1   (0x05) /*!< [23:16] sub1 version */
+#define __STM32F0XX_STDPERIPH_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
 #define __STM32F0XX_STDPERIPH_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F0XX_STDPERIPH_VERSION        ((__STM32F0XX_STDPERIPH_VERSION_MAIN << 24)\
                                              |(__STM32F0XX_STDPERIPH_VERSION_SUB1 << 16)\
@@ -347,8 +357,120 @@ typedef enum IRQn
   USART2_IRQn                 = 28,     /*!< USART2 Interrupt                                              */
   CEC_CAN_IRQn                = 30,     /*!< CEC and CAN Interrupts                                        */
   USB_IRQn                    = 31      /*!< USB Low Priority global Interrupt                             */
-#endif /* STM32F051 */ 
-} IRQn_Type;
+#elif defined (STM32F091)
+  WWDG_IRQn                   = 0,      /*!< Window WatchDog Interrupt                                       */
+  PVD_VDDIO2_IRQn             = 1,      /*!< PVD & VDDIO2 Interrupts through EXTI Lines 16 and 31            */
+  RTC_IRQn                    = 2,      /*!< RTC Interrupt through EXTI Lines 17, 19 and 20                  */
+  FLASH_IRQn                  = 3,      /*!< FLASH global Interrupt                                          */
+  RCC_CRS_IRQn                = 4,      /*!< RCC & CRS Global Interrupts                                     */
+  EXTI0_1_IRQn                = 5,      /*!< EXTI Line 0 and 1 Interrupts                                    */
+  EXTI2_3_IRQn                = 6,      /*!< EXTI Line 2 and 3 Interrupts                                    */
+  EXTI4_15_IRQn               = 7,      /*!< EXTI Line 4 to 15 Interrupts                                    */
+  TSC_IRQn                    = 8,      /*!< Touch Sensing Controller Interrupts                             */
+  DMA1_Ch1_IRQn               = 9,      /*!< DMA1 Channel 1 Interrupt                                        */
+  DMA1_Ch2_3_DMA2_Ch1_2_IRQn  = 10,     /*!< DMA1 Channel 2 and 3 & DMA2 Channel 1 and 2 Interrupts          */
+  DMA1_Ch4_7_DMA2_Ch3_5_IRQn  = 11,     /*!< DMA1 Channel 4 to 7 & DMA2 Channel 3 to 5 Interrupts            */
+  ADC1_COMP_IRQn               = 12,     /*!< ADC, COMP1 and COMP2 Interrupts (EXTI Lines 21 and 22)          */
+  TIM1_BRK_UP_TRG_COM_IRQn    = 13,     /*!< TIM1 Break, Update, Trigger and Commutation Interrupts          */
+  TIM1_CC_IRQn                = 14,     /*!< TIM1 Capture Compare Interrupt                                  */
+  TIM2_IRQn                   = 15,     /*!< TIM2 global Interrupt                                           */
+  TIM3_IRQn                   = 16,     /*!< TIM3 global Interrupt                                           */
+  TIM6_DAC_IRQn               = 17,     /*!< TIM6 global and DAC channel underrun error Interrupts           */
+  TIM7_IRQn                   = 18,     /*!< TIM7 global Interrupt                                           */
+  TIM14_IRQn                  = 19,     /*!< TIM14 global Interrupt                                          */
+  TIM15_IRQn                  = 20,     /*!< TIM15 global Interrupt                                          */
+  TIM16_IRQn                  = 21,     /*!< TIM16 global Interrupt                                          */
+  TIM17_IRQn                  = 22,     /*!< TIM17 global Interrupt                                          */
+  I2C1_IRQn                   = 23,     /*!< I2C1 Event Interrupt & EXTI Line23 Interrupt (I2C1 wakeup)      */
+  I2C2_IRQn                   = 24,     /*!< I2C2 Event Interrupt & EXTI Line24 Interrupt (I2C2 wakeup)      */
+  SPI1_IRQn                   = 25,     /*!< SPI1 global Interrupt                                           */
+  SPI2_IRQn                   = 26,     /*!< SPI2 global Interrupt                                           */
+  USART1_IRQn                 = 27,     /*!< USART1 global Interrupt & EXTI Line25 Interrupt (USART1 wakeup) */
+  USART2_IRQn                 = 28,     /*!< USART2 global Interrupt & EXTI Line26 Interrupt (USART2 wakeup) */
+  USART3_8_IRQn               = 29,     /*!< USART3 to USART8 global Interrupts                              */
+  CEC_CAN_IRQn                = 30      /*!< CEC and CAN global Interrupts & EXTI Line27 Interrupt           */
+#elif defined (STM32F070xB)
+  WWDG_IRQn                   = 0,      /*!< Window WatchDog Interrupt                                       */
+  RTC_IRQn                    = 2,      /*!< RTC Interrupt through EXTI Lines 17, 19 and 20                  */
+  FLASH_IRQn                  = 3,      /*!< FLASH global Interrupt                                          */
+  RCC_IRQn                    = 4,      /*!< RCC Global Interrupts                                           */
+  EXTI0_1_IRQn                = 5,      /*!< EXTI Line 0 and 1 Interrupts                                    */
+  EXTI2_3_IRQn                = 6,      /*!< EXTI Line 2 and 3 Interrupts                                    */
+  EXTI4_15_IRQn               = 7,      /*!< EXTI Line 4 to 15 Interrupts                                    */
+  DMA1_Channel1_IRQn          = 9,      /*!< DMA1 Channel 1 Interrupt                                        */
+  DMA1_Channel2_3_IRQn        = 10,     /*!< DMA1 Channel 2 and Channel 3 Interrupts                         */
+  DMA1_Channel4_5_IRQn        = 11,     /*!< DMA1 Channel 4 and Channel 5 Interrupts                          */
+  ADC1_IRQn                   = 12,     /*!< ADC1 interrupts (ADC interrupt combined with EXTI Lines 21 and 22 */
+  TIM1_BRK_UP_TRG_COM_IRQn    = 13,     /*!< TIM1 Break, Update, Trigger and Commutation Interrupts          */
+  TIM1_CC_IRQn                = 14,     /*!< TIM1 Capture Compare Interrupt                                  */
+  TIM3_IRQn                   = 16,     /*!< TIM3 global Interrupt                                           */
+  TIM6_IRQn                   = 17,     /*!< TIM6 global Interrupts                                          */
+  TIM7_IRQn                   = 18,     /*!< TIM7 global Interrupt                                           */
+  TIM14_IRQn                  = 19,     /*!< TIM14 global Interrupt                                          */
+  TIM15_IRQn                  = 20,     /*!< TIM15 global Interrupt                                          */
+  TIM16_IRQn                  = 21,     /*!< TIM16 global Interrupt                                          */
+  TIM17_IRQn                  = 22,     /*!< TIM17 global Interrupt                                          */
+  I2C1_IRQn                   = 23,     /*!< I2C1 Event Interrupt & EXTI Line23 Interrupt (I2C1 wakeup)      */
+  I2C2_IRQn                   = 24,     /*!< I2C2 Event Interrupt                                            */
+  SPI1_IRQn                   = 25,     /*!< SPI1 global Interrupt                                           */
+  SPI2_IRQn                   = 26,     /*!< SPI2 global Interrupt                                           */
+  USART1_IRQn                 = 27,     /*!< USART1 global Interrupt                                         */
+  USART2_IRQn                 = 28,     /*!< USART2 global Interrupt                                         */
+  USART3_4_IRQn               = 29,     /*!< USART3 and USART4 global Interrupts                             */
+  USB_IRQn                    = 31      /*!< USB global Interrupts & EXTI Line18 Interrupt                   */
+#elif defined (STM32F070x6)
+  WWDG_IRQn                   = 0,      /*!< Window WatchDog Interrupt                                       */
+  RTC_IRQn                    = 2,      /*!< RTC Interrupt through EXTI Lines 17, 19 and 20                  */
+  FLASH_IRQn                  = 3,      /*!< FLASH global Interrupt                                          */
+  RCC_IRQn                    = 4,      /*!< RCC Global Interrupts                                     */
+  EXTI0_1_IRQn                = 5,      /*!< EXTI Line 0 and 1 Interrupts                                    */
+  EXTI2_3_IRQn                = 6,      /*!< EXTI Line 2 and 3 Interrupts                                    */
+  EXTI4_15_IRQn               = 7,      /*!< EXTI Line 4 to 15 Interrupts                                    */
+  DMA1_Channel1_IRQn          = 9,      /*!< DMA1 Channel 1 Interrupt                                        */
+  DMA1_Channel2_3_IRQn        = 10,     /*!< DMA1 Channel 2 and Channel 3 Interrupts                         */
+  DMA1_Channel4_5_IRQn        = 11,     /*!< DMA1 Channel 4 and Channel 5 Interrupts                         */
+  ADC1_IRQn                   = 12,     /*!< ADC1 Interrupt                                                  */
+  TIM1_BRK_UP_TRG_COM_IRQn    = 13,     /*!< TIM1 Break, Update, Trigger and Commutation Interrupts          */
+  TIM1_CC_IRQn                = 14,     /*!< TIM1 Capture Compare Interrupt                                  */
+  TIM3_IRQn                   = 16,     /*!< TIM3 global Interrupt                                           */
+  TIM14_IRQn                  = 19,     /*!< TIM14 global Interrupt                                          */
+  TIM16_IRQn                  = 21,     /*!< TIM16 global Interrupt                                          */
+  TIM17_IRQn                  = 22,     /*!< TIM17 global Interrupt                                          */
+  I2C1_IRQn                   = 23,     /*!< I2C1 Event Interrupt & EXTI Line23 Interrupt (I2C1 wakeup)      */
+  SPI1_IRQn                   = 25,     /*!< SPI1 global Interrupt                                           */
+  USART1_IRQn                 = 27,     /*!< USART1 global Interrupt & EXTI Line25 Interrupt (USART1 wakeup) */
+  USART2_IRQn                 = 28,     /*!< USART2 global Interrupt                                         */
+  USB_IRQn                    = 31      /*!< USB global Interrupts & EXTI Line18 Interrupt                   */
+#elif defined (STM32F030xC)
+  WWDG_IRQn                   = 0,      /*!< Window WatchDog Interrupt                                       */
+  RTC_IRQn                    = 2,      /*!< RTC Interrupt through EXTI Lines 17, 19 and 20                  */
+  FLASH_IRQn                  = 3,      /*!< FLASH global Interrupt                                          */
+  RCC_IRQn                    = 4,      /*!< RCC Global Interrupts                                           */
+  EXTI0_1_IRQn                = 5,      /*!< EXTI Line 0 and 1 Interrupts                                    */
+  EXTI2_3_IRQn                = 6,      /*!< EXTI Line 2 and 3 Interrupts                                    */
+  EXTI4_15_IRQn               = 7,      /*!< EXTI Line 4 to 15 Interrupts                                    */
+  DMA1_Channel1_IRQn          = 9,      /*!< DMA1 Channel 1 Interrupt                                        */
+  DMA1_Channel2_3_IRQn        = 10,     /*!< DMA1 Channel 2 and Channel 3 Interrupts                         */
+  DMA1_Channel4_5_IRQn        = 11,     /*!< DMA1 Channel 4 and Channel 5 Interrupts                         */
+  ADC1_IRQn                   = 12,     /*!< ADC Interrupts                                                  */
+  TIM1_BRK_UP_TRG_COM_IRQn    = 13,     /*!< TIM1 Break, Update, Trigger and Commutation Interrupts          */
+  TIM1_CC_IRQn                = 14,     /*!< TIM1 Capture Compare Interrupt                                  */
+  TIM3_IRQn                   = 16,     /*!< TIM3 global Interrupt                                           */
+  TIM6_IRQn                   = 17,     /*!< TIM6 global Interrupts                                          */
+  TIM7_IRQn                   = 18,     /*!< TIM7 global Interrupt                                           */
+  TIM14_IRQn                  = 19,     /*!< TIM14 global Interrupt                                          */
+  TIM15_IRQn                  = 20,     /*!< TIM15 global Interrupt                                          */
+  TIM16_IRQn                  = 21,     /*!< TIM16 global Interrupt                                          */
+  TIM17_IRQn                  = 22,     /*!< TIM17 global Interrupt                                          */
+  I2C1_IRQn                   = 23,     /*!< I2C1 Event Interrupt & EXTI Line23 Interrupt (I2C1 wakeup)      */
+  I2C2_IRQn                   = 24,     /*!< I2C2 Event Interrupt                                            */
+  SPI1_IRQn                   = 25,     /*!< SPI1 global Interrupt                                           */
+  SPI2_IRQn                   = 26,     /*!< SPI2 global Interrupt                                           */
+  USART1_IRQn                 = 27,     /*!< USART1 global Interrupt & EXTI Line25 Interrupt (USART1 wakeup) */
+  USART2_IRQn                 = 28,     /*!< USART2 global Interrupt & EXTI Line26 Interrupt (USART2 wakeup) */
+  USART3_6_IRQn               = 29,     /*!< USART3 to USART6 global Interrupts                              */
+#endif /* STM32F051 */
+}IRQn_Type;
 
 /**
   * @}
@@ -561,7 +683,9 @@ typedef struct
 {
   __IO uint32_t ISR;          /*!< DMA interrupt status register,                            Address offset: 0x00 */
   __IO uint32_t IFCR;         /*!< DMA interrupt flag clear register,                        Address offset: 0x04 */
-} DMA_TypeDef;
+  uint32_t      RESERVED0[40];/*!< Reserved as declared by channel typedef                         0x08 - 0xA4*/
+  __IO uint32_t RMPCR;        /*!< Remap control register,                                      Address offset: 0xA8 */
+}DMA_TypeDef;
 
 /** 
   * @brief External Interrupt/Event Controller
@@ -638,11 +762,14 @@ typedef struct
 
 typedef struct
 {
-  __IO uint32_t CFGR1;       /*!< SYSCFG configuration register 1,                           Address offset: 0x00 */
-       uint32_t RESERVED;    /*!< Reserved,                                                                  0x04 */
-  __IO uint32_t EXTICR[4];   /*!< SYSCFG external interrupt configuration register,     Address offset: 0x14-0x08 */
-  __IO uint32_t CFGR2;       /*!< SYSCFG configuration register 2,                           Address offset: 0x18 */
-} SYSCFG_TypeDef;
+  __IO uint32_t CFGR1;          /*!< SYSCFG configuration register 1,                        Address offset: 0x00 */
+       uint32_t RESERVED;       /*!< Reserved,                                                               0x04 */
+  __IO uint32_t EXTICR[4];      /*!< SYSCFG external interrupt configuration register,  Address offset: 0x14-0x08 */
+  __IO uint32_t CFGR2;          /*!< SYSCFG configuration register 2,                        Address offset: 0x18 */
+       uint32_t RESERVED1[25];  /*!< Reserved + COMP,							                                           0x1C */
+  __IO uint32_t IT_LINE_SR[32]; /*!< SYSCFG configuration IT_LINE register,                  Address offset: 0x80 */
+       
+}SYSCFG_TypeDef;
 
 /** 
   * @brief Inter-integrated Circuit Interface
@@ -770,6 +897,171 @@ typedef struct
   uint16_t  RESERVED8;    /*!< Reserved, 0x22                                                            */    
 } SPI_TypeDef;
 
+typedef struct
+{
+  __IO uint16_t EP0R;            /*!< USB Endpoint 0 register,                Address offset: 0x00 */ 
+  __IO uint16_t RESERVED0;       /*!< Reserved */     
+  __IO uint16_t EP1R;            /*!< USB Endpoint 1 register,                Address offset: 0x04 */
+  __IO uint16_t RESERVED1;       /*!< Reserved */       
+  __IO uint16_t EP2R;            /*!< USB Endpoint 2 register,                Address offset: 0x08 */
+  __IO uint16_t RESERVED2;       /*!< Reserved */       
+  __IO uint16_t EP3R;            /*!< USB Endpoint 3 register,                Address offset: 0x0C */ 
+  __IO uint16_t RESERVED3;       /*!< Reserved */       
+  __IO uint16_t EP4R;            /*!< USB Endpoint 4 register,                Address offset: 0x10 */
+  __IO uint16_t RESERVED4;       /*!< Reserved */       
+  __IO uint16_t EP5R;            /*!< USB Endpoint 5 register,                Address offset: 0x14 */
+  __IO uint16_t RESERVED5;       /*!< Reserved */       
+  __IO uint16_t EP6R;            /*!< USB Endpoint 6 register,                Address offset: 0x18 */
+  __IO uint16_t RESERVED6;       /*!< Reserved */       
+  __IO uint16_t EP7R;            /*!< USB Endpoint 7 register,                Address offset: 0x1C */
+  __IO uint16_t RESERVED7[17];   /*!< Reserved */     
+  __IO uint16_t CNTR;            /*!< Control register,                       Address offset: 0x40 */
+  __IO uint16_t RESERVED8;       /*!< Reserved */       
+  __IO uint16_t ISTR;            /*!< Interrupt status register,              Address offset: 0x44 */
+  __IO uint16_t RESERVED9;       /*!< Reserved */       
+  __IO uint16_t FNR;             /*!< Frame number register,                  Address offset: 0x48 */
+  __IO uint16_t RESERVEDA;       /*!< Reserved */       
+  __IO uint16_t DADDR;           /*!< Device address register,                Address offset: 0x4C */
+  __IO uint16_t RESERVEDB;       /*!< Reserved */       
+  __IO uint16_t BTABLE;          /*!< Buffer Table address register,          Address offset: 0x50 */
+  __IO uint16_t RESERVEDC;       /*!< Reserved */       
+  __IO uint16_t LPMCSR;          /*!< LPM Control and Status register,        Address offset: 0x54 */
+  __IO uint16_t RESERVEDD;       /*!< Reserved */       
+  __IO uint16_t BCDR;            /*!< Battery Charging detector register,     Address offset: 0x58 */
+  __IO uint16_t RESERVEDE;       /*!< Reserved */       
+} USB_TypeDef;
+#define USB_BASE              (APBPERIPH_BASE + 0x00005C00) /*!< USB_IP Peripheral Registers base address */
+#define USB_PMAADDR           (APBPERIPH_BASE + 0x00006000)
+#define USB                 ((USB_TypeDef *) USB_BASE)
+/******************************************************************************/
+/*                                                                            */
+/*                         USB Device General registers                       */
+/*                                                                            */
+/******************************************************************************/
+#define USB_CNTR                             (USB_BASE + 0x40)             /*!< Control register */
+#define USB_ISTR                             (USB_BASE + 0x44)             /*!< Interrupt status register */
+#define USB_FNR                              (USB_BASE + 0x48)             /*!< Frame number register */
+#define USB_DADDR                            (USB_BASE + 0x4C)             /*!< Device address register */
+#define USB_BTABLE                           (USB_BASE + 0x50)             /*!< Buffer Table address register */
+#define USB_LPMCSR                           (USB_BASE + 0x54)             /*!< LPM Control and Status register */
+#define USB_BCDR                             (USB_BASE + 0x58)             /*!< Battery Charging detector register*/
+
+/****************************  ISTR interrupt events  *************************/
+#define USB_ISTR_CTR                         ((uint16_t)0x8000U)               /*!< Correct TRansfer (clear-only bit) */
+#define USB_ISTR_PMAOVR                      ((uint16_t)0x4000U)               /*!< DMA OVeR/underrun (clear-only bit) */
+#define USB_ISTR_ERR                         ((uint16_t)0x2000U)               /*!< ERRor (clear-only bit) */
+#define USB_ISTR_WKUP                        ((uint16_t)0x1000U)               /*!< WaKe UP (clear-only bit) */
+#define USB_ISTR_SUSP                        ((uint16_t)0x0800U)               /*!< SUSPend (clear-only bit) */
+#define USB_ISTR_RESET                       ((uint16_t)0x0400U)               /*!< RESET (clear-only bit) */
+#define USB_ISTR_SOF                         ((uint16_t)0x0200U)               /*!< Start Of Frame (clear-only bit) */
+#define USB_ISTR_ESOF                        ((uint16_t)0x0100U)               /*!< Expected Start Of Frame (clear-only bit) */
+#define USB_ISTR_L1REQ                       ((uint16_t)0x0080U)               /*!< LPM L1 state request  */
+#define USB_ISTR_DIR                         ((uint16_t)0x0010U)               /*!< DIRection of transaction (read-only bit)  */
+#define USB_ISTR_EP_ID                       ((uint16_t)0x000FU)               /*!< EndPoint IDentifier (read-only bit)  */
+
+#define USB_CLR_CTR                          (~USB_ISTR_CTR)             /*!< clear Correct TRansfer bit */
+#define USB_CLR_PMAOVR                       (~USB_ISTR_PMAOVR)          /*!< clear DMA OVeR/underrun bit*/
+#define USB_CLR_ERR                          (~USB_ISTR_ERR)             /*!< clear ERRor bit */
+#define USB_CLR_WKUP                         (~USB_ISTR_WKUP)            /*!< clear WaKe UP bit */
+#define USB_CLR_SUSP                         (~USB_ISTR_SUSP)            /*!< clear SUSPend bit */
+#define USB_CLR_RESET                        (~USB_ISTR_RESET)           /*!< clear RESET bit */
+#define USB_CLR_SOF                          (~USB_ISTR_SOF)             /*!< clear Start Of Frame bit */
+#define USB_CLR_ESOF                         (~USB_ISTR_ESOF)            /*!< clear Expected Start Of Frame bit */
+#define USB_CLR_L1REQ                        (~USB_ISTR_L1REQ)           /*!< clear LPM L1  bit */
+
+/*************************  CNTR control register bits definitions  ***********/
+#define USB_CNTR_CTRM                        ((uint16_t)0x8000U)               /*!< Correct TRansfer Mask */
+#define USB_CNTR_PMAOVRM                     ((uint16_t)0x4000U)               /*!< DMA OVeR/underrun Mask */
+#define USB_CNTR_ERRM                        ((uint16_t)0x2000U)               /*!< ERRor Mask */
+#define USB_CNTR_WKUPM                       ((uint16_t)0x1000U)               /*!< WaKe UP Mask */
+#define USB_CNTR_SUSPM                       ((uint16_t)0x0800U)               /*!< SUSPend Mask */
+#define USB_CNTR_RESETM                      ((uint16_t)0x0400U)               /*!< RESET Mask   */
+#define USB_CNTR_SOFM                        ((uint16_t)0x0200U)               /*!< Start Of Frame Mask */
+#define USB_CNTR_ESOFM                       ((uint16_t)0x0100U)               /*!< Expected Start Of Frame Mask */
+#define USB_CNTR_L1REQM                      ((uint16_t)0x0080U)               /*!< LPM L1 state request interrupt mask */
+#define USB_CNTR_L1RESUME                    ((uint16_t)0x0020U)               /*!< LPM L1 Resume request */
+#define USB_CNTR_RESUME                      ((uint16_t)0x0010U)               /*!< RESUME request */
+#define USB_CNTR_FSUSP                       ((uint16_t)0x0008U)               /*!< Force SUSPend */
+#define USB_CNTR_LPMODE                      ((uint16_t)0x0004U)               /*!< Low-power MODE */
+#define USB_CNTR_PDWN                        ((uint16_t)0x0002U)               /*!< Power DoWN */
+#define USB_CNTR_FRES                        ((uint16_t)0x0001U)               /*!< Force USB RESet */
+
+/*************************  BCDR control register bits definitions  ***********/
+#define USB_BCDR_DPPU                        ((uint16_t)0x8000U)               /*!< DP Pull-up Enable */  
+#define USB_BCDR_PS2DET                      ((uint16_t)0x0080U)               /*!< PS2 port or proprietary charger detected */  
+#define USB_BCDR_SDET                        ((uint16_t)0x0040U)               /*!< Secondary detection (SD) status */  
+#define USB_BCDR_PDET                        ((uint16_t)0x0020U)               /*!< Primary detection (PD) status */ 
+#define USB_BCDR_DCDET                       ((uint16_t)0x0010U)               /*!< Data contact detection (DCD) status */ 
+#define USB_BCDR_SDEN                        ((uint16_t)0x0008U)               /*!< Secondary detection (SD) mode enable */ 
+#define USB_BCDR_PDEN                        ((uint16_t)0x0004U)               /*!< Primary detection (PD) mode enable */  
+#define USB_BCDR_DCDEN                       ((uint16_t)0x0002U)               /*!< Data contact detection (DCD) mode enable */
+#define USB_BCDR_BCDEN                       ((uint16_t)0x0001U)               /*!< Battery charging detector (BCD) enable */
+
+/***************************  LPM register bits definitions  ******************/
+#define USB_LPMCSR_BESL                      ((uint16_t)0x00F0U)               /*!< BESL value received with last ACKed LPM Token  */ 
+#define USB_LPMCSR_REMWAKE                   ((uint16_t)0x0008U)               /*!< bRemoteWake value received with last ACKed LPM Token */ 
+#define USB_LPMCSR_LPMACK                    ((uint16_t)0x0002U)               /*!< LPM Token acknowledge enable*/
+#define USB_LPMCSR_LMPEN                     ((uint16_t)0x0001U)               /*!< LPM support enable  */
+
+/********************  FNR Frame Number Register bit definitions   ************/
+#define USB_FNR_RXDP                         ((uint16_t)0x8000U)               /*!< status of D+ data line */
+#define USB_FNR_RXDM                         ((uint16_t)0x4000U)               /*!< status of D- data line */
+#define USB_FNR_LCK                          ((uint16_t)0x2000U)               /*!< LoCKed */
+#define USB_FNR_LSOF                         ((uint16_t)0x1800U)               /*!< Lost SOF */
+#define USB_FNR_FN                           ((uint16_t)0x07FFU)               /*!< Frame Number */
+
+/********************  DADDR Device ADDRess bit definitions    ****************/
+#define USB_DADDR_EF                         ((uint8_t)0x80U)                  /*!< USB device address Enable Function */
+#define USB_DADDR_ADD                        ((uint8_t)0x7FU)                  /*!< USB device address */
+
+/******************************  Endpoint register    *************************/
+#define USB_EP0R                             USB_BASE                   /*!< endpoint 0 register address */
+#define USB_EP1R                             (USB_BASE + 0x04)           /*!< endpoint 1 register address */
+#define USB_EP2R                             (USB_BASE + 0x08)           /*!< endpoint 2 register address */
+#define USB_EP3R                             (USB_BASE + 0x0C)           /*!< endpoint 3 register address */
+#define USB_EP4R                             (USB_BASE + 0x10)           /*!< endpoint 4 register address */
+#define USB_EP5R                             (USB_BASE + 0x14)           /*!< endpoint 5 register address */
+#define USB_EP6R                             (USB_BASE + 0x18)           /*!< endpoint 6 register address */
+#define USB_EP7R                             (USB_BASE + 0x1C)           /*!< endpoint 7 register address */
+/* bit positions */ 
+#define USB_EP_CTR_RX                        ((uint16_t)0x8000U)               /*!<  EndPoint Correct TRansfer RX */
+#define USB_EP_DTOG_RX                       ((uint16_t)0x4000U)               /*!<  EndPoint Data TOGGLE RX */
+#define USB_EPRX_STAT                        ((uint16_t)0x3000U)               /*!<  EndPoint RX STATus bit field */
+#define USB_EP_SETUP                         ((uint16_t)0x0800U)               /*!<  EndPoint SETUP */
+#define USB_EP_T_FIELD                       ((uint16_t)0x0600U)               /*!<  EndPoint TYPE */
+#define USB_EP_KIND                          ((uint16_t)0x0100U)               /*!<  EndPoint KIND */
+#define USB_EP_CTR_TX                        ((uint16_t)0x0080U)               /*!<  EndPoint Correct TRansfer TX */
+#define USB_EP_DTOG_TX                       ((uint16_t)0x0040U)               /*!<  EndPoint Data TOGGLE TX */
+#define USB_EPTX_STAT                        ((uint16_t)0x0030U)               /*!<  EndPoint TX STATus bit field */
+#define USB_EPADDR_FIELD                     ((uint16_t)0x000FU)               /*!<  EndPoint ADDRess FIELD */
+
+/* EndPoint REGister MASK (no toggle fields) */
+#define USB_EPREG_MASK     (USB_EP_CTR_RX|USB_EP_SETUP|USB_EP_T_FIELD|USB_EP_KIND|USB_EP_CTR_TX|USB_EPADDR_FIELD)
+                                                                               /*!< EP_TYPE[1:0] EndPoint TYPE */
+#define USB_EP_TYPE_MASK                     ((uint16_t)0x0600U)               /*!< EndPoint TYPE Mask */
+#define USB_EP_BULK                          ((uint16_t)0x0000U)               /*!< EndPoint BULK */
+#define USB_EP_CONTROL                       ((uint16_t)0x0200U)               /*!< EndPoint CONTROL */
+#define USB_EP_ISOCHRONOUS                   ((uint16_t)0x0400U)               /*!< EndPoint ISOCHRONOUS */
+#define USB_EP_INTERRUPT                     ((uint16_t)0x0600U)               /*!< EndPoint INTERRUPT */
+#define USB_EP_T_MASK                        (((uint16_t)(~USB_EP_T_FIELD)) & USB_EPREG_MASK)
+                                                                 
+#define USB_EPKIND_MASK    (~USB_EP_KIND & USB_EPREG_MASK)            /*!< EP_KIND EndPoint KIND */
+                                                                               /*!< STAT_TX[1:0] STATus for TX transfer */
+#define USB_EP_TX_DIS                        ((uint16_t)0x0000U)               /*!< EndPoint TX DISabled */
+#define USB_EP_TX_STALL                      ((uint16_t)0x0010U)               /*!< EndPoint TX STALLed */
+#define USB_EP_TX_NAK                        ((uint16_t)0x0020U)               /*!< EndPoint TX NAKed */
+#define USB_EP_TX_VALID                      ((uint16_t)0x0030U)               /*!< EndPoint TX VALID */
+#define USB_EPTX_DTOG1                       ((uint16_t)0x0010U)               /*!< EndPoint TX Data TOGgle bit1 */
+#define USB_EPTX_DTOG2                       ((uint16_t)0x0020U)               /*!< EndPoint TX Data TOGgle bit2 */
+#define USB_EPTX_DTOGMASK  (USB_EPTX_STAT|USB_EPREG_MASK)
+                                                                               /*!< STAT_RX[1:0] STATus for RX transfer */
+#define USB_EP_RX_DIS                        ((uint16_t)0x0000U)               /*!< EndPoint RX DISabled */
+#define USB_EP_RX_STALL                      ((uint16_t)0x1000U)               /*!< EndPoint RX STALLed */
+#define USB_EP_RX_NAK                        ((uint16_t)0x2000U)               /*!< EndPoint RX NAKed */
+#define USB_EP_RX_VALID                      ((uint16_t)0x3000U)               /*!< EndPoint RX VALID */
+#define USB_EPRX_DTOG1                       ((uint16_t)0x1000U)               /*!< EndPoint RX Data TOGgle bit1 */
+#define USB_EPRX_DTOG2                       ((uint16_t)0x2000U)               /*!< EndPoint RX Data TOGgle bit1 */
+#define USB_EPRX_DTOGMASK  (USB_EPRX_STAT|USB_EPREG_MASK)
 
 /** 
   * @brief TIM
@@ -869,39 +1161,6 @@ typedef struct
   __IO uint32_t CFR;  /*!< WWDG Configuration register, Address offset: 0x04 */
   __IO uint32_t SR;   /*!< WWDG Status register,        Address offset: 0x08 */
 } WWDG_TypeDef;
-typedef struct
-{
-  __IO uint16_t EP0R;            /*!< USB Endpoint 0 register,                Address offset: 0x00 */ 
-  __IO uint16_t RESERVED0;       /*!< Reserved */     
-  __IO uint16_t EP1R;            /*!< USB Endpoint 1 register,                Address offset: 0x04 */
-  __IO uint16_t RESERVED1;       /*!< Reserved */       
-  __IO uint16_t EP2R;            /*!< USB Endpoint 2 register,                Address offset: 0x08 */
-  __IO uint16_t RESERVED2;       /*!< Reserved */       
-  __IO uint16_t EP3R;            /*!< USB Endpoint 3 register,                Address offset: 0x0C */ 
-  __IO uint16_t RESERVED3;       /*!< Reserved */       
-  __IO uint16_t EP4R;            /*!< USB Endpoint 4 register,                Address offset: 0x10 */
-  __IO uint16_t RESERVED4;       /*!< Reserved */       
-  __IO uint16_t EP5R;            /*!< USB Endpoint 5 register,                Address offset: 0x14 */
-  __IO uint16_t RESERVED5;       /*!< Reserved */       
-  __IO uint16_t EP6R;            /*!< USB Endpoint 6 register,                Address offset: 0x18 */
-  __IO uint16_t RESERVED6;       /*!< Reserved */       
-  __IO uint16_t EP7R;            /*!< USB Endpoint 7 register,                Address offset: 0x1C */
-  __IO uint16_t RESERVED7[17];   /*!< Reserved */     
-  __IO uint16_t CNTR;            /*!< Control register,                       Address offset: 0x40 */
-  __IO uint16_t RESERVED8;       /*!< Reserved */       
-  __IO uint16_t ISTR;            /*!< Interrupt status register,              Address offset: 0x44 */
-  __IO uint16_t RESERVED9;       /*!< Reserved */       
-  __IO uint16_t FNR;             /*!< Frame number register,                  Address offset: 0x48 */
-  __IO uint16_t RESERVEDA;       /*!< Reserved */       
-  __IO uint16_t DADDR;           /*!< Device address register,                Address offset: 0x4C */
-  __IO uint16_t RESERVEDB;       /*!< Reserved */       
-  __IO uint16_t BTABLE;          /*!< Buffer Table address register,          Address offset: 0x50 */
-  __IO uint16_t RESERVEDC;       /*!< Reserved */       
-  __IO uint16_t LPMCSR;          /*!< LPM Control and Status register,        Address offset: 0x54 */
-  __IO uint16_t RESERVEDD;       /*!< Reserved */       
-  __IO uint16_t BCDR;            /*!< Battery Charging detector register,     Address offset: 0x58 */
-  __IO uint16_t RESERVEDE;       /*!< Reserved */       
-} USB_TypeDef;
 
 
 /**
@@ -933,10 +1192,9 @@ typedef struct
 #define USART2_BASE           (APBPERIPH_BASE + 0x00004400)
 #define USART3_BASE           (APBPERIPH_BASE + 0x00004800)
 #define USART4_BASE           (APBPERIPH_BASE + 0x00004C00)
+#define USART5_BASE           (APBPERIPH_BASE + 0x00005000)
 #define I2C1_BASE             (APBPERIPH_BASE + 0x00005400)
 #define I2C2_BASE             (APBPERIPH_BASE + 0x00005800)
-#define USB_BASE              (APBPERIPH_BASE + 0x00005C00) /*!< USB_IP Peripheral Registers base address */
-#define USB_PMAADDR           (APBPERIPH_BASE + 0x00006000) /*!< USB_IP Packet Memory Area base address */
 #define CAN_BASE              (APBPERIPH_BASE + 0x00006400)
 #define CRS_BASE              (APBPERIPH_BASE + 0x00006C00)
 #define PWR_BASE              (APBPERIPH_BASE + 0x00007000)
@@ -946,8 +1204,11 @@ typedef struct
 #define SYSCFG_BASE           (APBPERIPH_BASE + 0x00010000)
 #define COMP_BASE             (APBPERIPH_BASE + 0x0001001C)
 #define EXTI_BASE             (APBPERIPH_BASE + 0x00010400)
-#define ADC1_BASE             (APBPERIPH_BASE + 0x00012400)
-#define ADC_BASE              (APBPERIPH_BASE + 0x00012708)
+#define USART6_BASE           (APBPERIPH_BASE + 0x00011400)
+#define USART7_BASE           (APBPERIPH_BASE + 0x00011800)
+#define USART8_BASE           (APBPERIPH_BASE + 0x00011C00)
+#define ADC1_BASE             (APBPERIPH_BASE + 0x00012400) /* KVL: TBC*/
+#define ADC_BASE              (APBPERIPH_BASE + 0x00012708) /* KVL: TBC*/
 #define TIM1_BASE             (APBPERIPH_BASE + 0x00012C00)
 #define SPI1_BASE             (APBPERIPH_BASE + 0x00013000)
 #define USART1_BASE           (APBPERIPH_BASE + 0x00013800)
@@ -964,6 +1225,12 @@ typedef struct
 #define DMA1_Channel5_BASE    (DMA1_BASE + 0x00000058)
 #define DMA1_Channel6_BASE    (DMA1_BASE + 0x0000006C)
 #define DMA1_Channel7_BASE    (DMA1_BASE + 0x00000080)
+#define DMA2_BASE             (AHBPERIPH_BASE + 0x00000400)
+#define DMA2_Channel1_BASE    (DMA2_BASE + 0x00000008)
+#define DMA2_Channel2_BASE    (DMA2_BASE + 0x0000001C)
+#define DMA2_Channel3_BASE    (DMA2_BASE + 0x00000030)
+#define DMA2_Channel4_BASE    (DMA2_BASE + 0x00000044)
+#define DMA2_Channel5_BASE    (DMA2_BASE + 0x00000058)
 
 #define RCC_BASE              (AHBPERIPH_BASE + 0x00001000)
 #define FLASH_R_BASE          (AHBPERIPH_BASE + 0x00002000) /*!< FLASH registers base address */
@@ -998,6 +1265,7 @@ typedef struct
 #define USART2              ((USART_TypeDef *) USART2_BASE)
 #define USART3              ((USART_TypeDef *) USART3_BASE)
 #define USART4              ((USART_TypeDef *) USART4_BASE)
+#define USART5              ((USART_TypeDef *) USART5_BASE)
 #define I2C1                ((I2C_TypeDef *) I2C1_BASE)
 #define I2C2                ((I2C_TypeDef *) I2C2_BASE)
 #define CAN                 ((CAN_TypeDef *) CAN_BASE)
@@ -1009,6 +1277,9 @@ typedef struct
 #define SYSCFG              ((SYSCFG_TypeDef *) SYSCFG_BASE)
 #define COMP                ((COMP_TypeDef *) COMP_BASE)
 #define EXTI                ((EXTI_TypeDef *) EXTI_BASE)
+#define USART6              ((USART_TypeDef *) USART6_BASE)
+#define USART7              ((USART_TypeDef *) USART7_BASE)
+#define USART8              ((USART_TypeDef *) USART8_BASE)
 #define ADC1                ((ADC_TypeDef *) ADC1_BASE)
 #define ADC                 ((ADC_Common_TypeDef *) ADC_BASE)
 #define TIM1                ((TIM_TypeDef *) TIM1_BASE)
@@ -1027,6 +1298,13 @@ typedef struct
 #define DMA1_Channel5       ((DMA_Channel_TypeDef *) DMA1_Channel5_BASE)
 #define DMA1_Channel6       ((DMA_Channel_TypeDef *) DMA1_Channel6_BASE)
 #define DMA1_Channel7       ((DMA_Channel_TypeDef *) DMA1_Channel7_BASE)
+#define DMA2                ((DMA_TypeDef *) DMA2_BASE)
+#define DMA2_Channel1       ((DMA_Channel_TypeDef *) DMA2_Channel1_BASE)
+#define DMA2_Channel2       ((DMA_Channel_TypeDef *) DMA2_Channel2_BASE)
+#define DMA2_Channel3       ((DMA_Channel_TypeDef *) DMA2_Channel3_BASE)
+#define DMA2_Channel4       ((DMA_Channel_TypeDef *) DMA2_Channel4_BASE)
+#define DMA2_Channel5       ((DMA_Channel_TypeDef *) DMA2_Channel5_BASE)
+
 #define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
 #define OB                  ((OB_TypeDef *) OB_BASE) 
 #define RCC                 ((RCC_TypeDef *) RCC_BASE)
@@ -1039,7 +1317,6 @@ typedef struct
 #define GPIOD               ((GPIO_TypeDef *) GPIOD_BASE)
 #define GPIOE               ((GPIO_TypeDef *) GPIOE_BASE)
 #define GPIOF               ((GPIO_TypeDef *) GPIOF_BASE)
-#define USB                 ((USB_TypeDef *) USB_BASE)
 
 /**
   * @}
@@ -2822,6 +3099,161 @@ typedef struct
 /******************  Bit definition for DMA_CMAR register  ********************/
 #define  DMA_CMAR_MA                         ((uint32_t)0xFFFFFFFF)        /*!< Memory Address                      */
 
+/******************  Bit definition for DMA_RMPCR1 register  ********************/
+#define DMA_RMPCR1_DEFAULT                  ((uint32_t)0x00000000)        /*!< Default remap position for DMA1 */
+#define DMA_RMPCR1_CH1_ADC                  ((uint32_t)0x00000001)        /*!< Remap ADC on DMA1 Channel 1*/
+#define DMA_RMPCR1_CH1_TIM17_CH1            ((uint32_t)0x00000007)        /*!< Remap TIM17 channel 1 on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_TIM17_UP             ((uint32_t)0x00000007)        /*!< Remap TIM17 up on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART1_RX            ((uint32_t)0x00000008)        /*!< Remap USART1 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART2_RX            ((uint32_t)0x00000009)        /*!< Remap USART2 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART3_RX            ((uint32_t)0x0000000A)        /*!< Remap USART3 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART4_RX            ((uint32_t)0x0000000B)        /*!< Remap USART4 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART5_RX            ((uint32_t)0x0000000C)        /*!< Remap USART5 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART6_RX            ((uint32_t)0x0000000D)        /*!< Remap USART6 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART7_RX            ((uint32_t)0x0000000E)        /*!< Remap USART7 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH1_USART8_RX            ((uint32_t)0x0000000F)        /*!< Remap USART8 Rx on DMA1 channel 1 */
+#define DMA_RMPCR1_CH2_ADC                  ((uint32_t)0x00000010)        /*!< Remap ADC on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_I2C1_TX              ((uint32_t)0x00000020)        /*!< Remap I2C1 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_SPI_1RX              ((uint32_t)0x00000030)        /*!< Remap SPI1 Rx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_TIM1_CH1             ((uint32_t)0x00000040)        /*!< Remap TIM1 channel 1 on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_TIM17_CH1            ((uint32_t)0x00000070)        /*!< Remap TIM17 channel 1 on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_TIM17_UP             ((uint32_t)0x00000070)        /*!< Remap TIM17 up on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART1_TX            ((uint32_t)0x00000080)        /*!< Remap USART1 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART2_TX            ((uint32_t)0x00000090)        /*!< Remap USART2 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART3_TX            ((uint32_t)0x000000A0)        /*!< Remap USART3 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART4_TX            ((uint32_t)0x000000B0)        /*!< Remap USART4 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART5_TX            ((uint32_t)0x000000C0)        /*!< Remap USART5 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART6_TX            ((uint32_t)0x000000D0)        /*!< Remap USART6 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART7_TX            ((uint32_t)0x000000E0)        /*!< Remap USART7 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH2_USART8_TX            ((uint32_t)0x000000F0)        /*!< Remap USART8 Tx on DMA1 channel 2 */
+#define DMA_RMPCR1_CH3_TIM6_UP              ((uint32_t)0x00000100)        /*!< Remap TIM6 up on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_DAC_CH1              ((uint32_t)0x00000100)        /*!< Remap DAC Channel 1on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_I2C1_RX              ((uint32_t)0x00000200)        /*!< Remap I2C1 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_SPI1_TX              ((uint32_t)0x00000300)        /*!< Remap SPI1 Tx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_TIM1_CH2             ((uint32_t)0x00000400)        /*!< Remap TIM1 channel 2 on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_TIM2_CH2             ((uint32_t)0x00000500)        /*!< Remap TIM2 channel 2 on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_TIM16_CH1            ((uint32_t)0x00000700)        /*!< Remap TIM16 channel 1 on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_TIM16_UP             ((uint32_t)0x00000700)        /*!< Remap TIM16 up on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART1_RX            ((uint32_t)0x00000800)        /*!< Remap USART1 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART2_RX            ((uint32_t)0x00000900)        /*!< Remap USART2 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART3_RX            ((uint32_t)0x00000A00)        /*!< Remap USART3 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART4_RX            ((uint32_t)0x00000B00)        /*!< Remap USART4 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART5_RX            ((uint32_t)0x00000C00)        /*!< Remap USART5 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART6_RX            ((uint32_t)0x00000D00)        /*!< Remap USART6 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART7_RX            ((uint32_t)0x00000E00)        /*!< Remap USART7 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH3_USART8_RX            ((uint32_t)0x00000F00)        /*!< Remap USART8 Rx on DMA1 channel 3 */
+#define DMA_RMPCR1_CH4_TIM7_UP              ((uint32_t)0x00001000)        /*!< Remap TIM7 up on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_DAC_CH2              ((uint32_t)0x00001000)        /*!< Remap DAC Channel 2 on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_I2C2_TX              ((uint32_t)0x00002000)        /*!< Remap I2C2 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_SPI2_RX              ((uint32_t)0x00003000)        /*!< Remap SPI2 Rx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_TIM2_CH4             ((uint32_t)0x00005000)        /*!< Remap TIM2 channel 4 on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_TIM3_CH1             ((uint32_t)0x00006000)        /*!< Remap TIM3 channel 1 on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_TIM3_TRIG            ((uint32_t)0x00006000)        /*!< Remap TIM3 Trig on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_TIM16_CH1            ((uint32_t)0x00007000)        /*!< Remap TIM16 channel 1 on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_TIM16_UP             ((uint32_t)0x00007000)        /*!< Remap TIM16 up on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART1_TX            ((uint32_t)0x00008000)        /*!< Remap USART1 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART2_TX            ((uint32_t)0x00009000)        /*!< Remap USART2 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART3_TX            ((uint32_t)0x0000A000)        /*!< Remap USART3 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART4_TX            ((uint32_t)0x0000B000)        /*!< Remap USART4 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART5_TX            ((uint32_t)0x0000C000)        /*!< Remap USART5 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART6_TX            ((uint32_t)0x0000D000)        /*!< Remap USART6 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART7_TX            ((uint32_t)0x0000E000)        /*!< Remap USART7 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH4_USART8_TX            ((uint32_t)0x0000F000)        /*!< Remap USART8 Tx on DMA1 channel 4 */
+#define DMA_RMPCR1_CH5_I2C2_RX              ((uint32_t)0x00020000)        /*!< Remap I2C2 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_SPI2_TX              ((uint32_t)0x00030000)        /*!< Remap SPI1 Tx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_TIM1_CH3             ((uint32_t)0x00040000)        /*!< Remap TIM1 channel 3 on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART1_RX            ((uint32_t)0x00080000)        /*!< Remap USART1 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART2_RX            ((uint32_t)0x00090000)        /*!< Remap USART2 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART3_RX            ((uint32_t)0x000A0000)        /*!< Remap USART3 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART4_RX            ((uint32_t)0x000B0000)        /*!< Remap USART4 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART5_RX            ((uint32_t)0x000C0000)        /*!< Remap USART5 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART6_RX            ((uint32_t)0x000D0000)        /*!< Remap USART6 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART7_RX            ((uint32_t)0x000E0000)        /*!< Remap USART7 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH5_USART8_RX            ((uint32_t)0x000F0000)        /*!< Remap USART8 Rx on DMA1 channel 5 */
+#define DMA_RMPCR1_CH6_I2C1_TX              ((uint32_t)0x00200000)        /*!< Remap I2C1 Tx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_SPI2_RX              ((uint32_t)0x00300000)        /*!< Remap SPI2 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM1_CH1             ((uint32_t)0x00400000)        /*!< Remap TIM1 channel 1 on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM1_CH2             ((uint32_t)0x00400000)        /*!< Remap TIM1 channel 2 on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM1_CH3             ((uint32_t)0x00400000)        /*!< Remap TIM1 channel 3 on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM3_CH1             ((uint32_t)0x00600000)        /*!< Remap TIM3 channel 1 on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM3_TRIG            ((uint32_t)0x00600000)        /*!< Remap TIM3 Trig on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM16_CH1            ((uint32_t)0x00700000)        /*!< Remap TIM16 channel 1 on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_TIM16_UP             ((uint32_t)0x00700000)        /*!< Remap TIM16 up on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART1_RX            ((uint32_t)0x00800000)        /*!< Remap USART1 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART2_RX            ((uint32_t)0x00900000)        /*!< Remap USART2 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART3_RX            ((uint32_t)0x00A00000)        /*!< Remap USART3 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART4_RX            ((uint32_t)0x00B00000)        /*!< Remap USART4 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART5_RX            ((uint32_t)0x00C00000)        /*!< Remap USART5 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART6_RX            ((uint32_t)0x00D00000)        /*!< Remap USART6 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART7_RX            ((uint32_t)0x00E00000)        /*!< Remap USART7 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH6_USART8_RX            ((uint32_t)0x00F00000)        /*!< Remap USART8 Rx on DMA1 channel 6 */
+#define DMA_RMPCR1_CH7_I2C1_RX              ((uint32_t)0x02000000)        /*!< Remap I2C1 Rx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_SPI2_TX              ((uint32_t)0x03000000)        /*!< Remap SPI2 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_TIM2_CH2             ((uint32_t)0x05000000)        /*!< Remap TIM2 channel 2 on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_TIM2_CH4             ((uint32_t)0x05000000)        /*!< Remap TIM2 channel 4 on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_TIM17_CH1            ((uint32_t)0x07000000)        /*!< Remap TIM17 channel 1 on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_TIM17_UP             ((uint32_t)0x07000000)        /*!< Remap TIM17 up on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART1_TX            ((uint32_t)0x08000000)        /*!< Remap USART1 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART2_TX            ((uint32_t)0x09000000)        /*!< Remap USART2 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART3_TX            ((uint32_t)0x0A000000)        /*!< Remap USART3 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART4_TX            ((uint32_t)0x0B000000)        /*!< Remap USART4 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART5_TX            ((uint32_t)0x0C000000)        /*!< Remap USART5 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART6_TX            ((uint32_t)0x0D000000)        /*!< Remap USART6 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART7_TX            ((uint32_t)0x0E000000)        /*!< Remap USART7 Tx on DMA1 channel 7 */
+#define DMA_RMPCR1_CH7_USART8_TX            ((uint32_t)0x0F000000)        /*!< Remap USART8 Tx on DMA1 channel 7 */
+
+/******************  Bit definition for DMA_RMPCR2 register  ********************/
+#define DMA_RMPCR2_DEFAULT                  ((uint32_t)0x00000000)        /*!< Default remap position for DMA2 */
+#define DMA_RMPCR2_CH1_I2C2_TX              ((uint32_t)0x00000002)        /*!< Remap I2C2 TX on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART1_TX            ((uint32_t)0x00000008)        /*!< Remap USART1 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART2_TX            ((uint32_t)0x00000009)        /*!< Remap USART2 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART3_TX            ((uint32_t)0x0000000A)        /*!< Remap USART3 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART4_TX            ((uint32_t)0x0000000B)        /*!< Remap USART4 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART5_TX            ((uint32_t)0x0000000C)        /*!< Remap USART5 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART6_TX            ((uint32_t)0x0000000D)        /*!< Remap USART6 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART7_TX            ((uint32_t)0x0000000E)        /*!< Remap USART7 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH1_USART8_TX            ((uint32_t)0x0000000F)        /*!< Remap USART8 Tx on DMA2 channel 1 */
+#define DMA_RMPCR2_CH2_I2C2_RX              ((uint32_t)0x00000020)        /*!< Remap I2C2 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART1_RX            ((uint32_t)0x00000080)        /*!< Remap USART1 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART2_RX            ((uint32_t)0x00000090)        /*!< Remap USART2 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART3_RX            ((uint32_t)0x000000A0)        /*!< Remap USART3 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART4_RX            ((uint32_t)0x000000B0)        /*!< Remap USART4 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART5_RX            ((uint32_t)0x000000C0)        /*!< Remap USART5 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART6_RX            ((uint32_t)0x000000D0)        /*!< Remap USART6 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART7_RX            ((uint32_t)0x000000E0)        /*!< Remap USART7 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH2_USART8_RX            ((uint32_t)0x000000F0)        /*!< Remap USART8 Rx on DMA2 channel 2 */
+#define DMA_RMPCR2_CH3_TIM6_UP              ((uint32_t)0x00000100)        /*!< Remap TIM6 up on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_DAC_CH1              ((uint32_t)0x00000100)        /*!< Remap DAC channel 1 on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_SPI1_RX              ((uint32_t)0x00000300)        /*!< Remap SPI1 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART1_RX            ((uint32_t)0x00000800)        /*!< Remap USART1 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART2_RX            ((uint32_t)0x00000900)        /*!< Remap USART2 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART3_RX            ((uint32_t)0x00000A00)        /*!< Remap USART3 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART4_RX            ((uint32_t)0x00000B00)        /*!< Remap USART4 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART5_RX            ((uint32_t)0x00000C00)        /*!< Remap USART5 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART6_RX            ((uint32_t)0x00000D00)        /*!< Remap USART6 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART7_RX            ((uint32_t)0x00000E00)        /*!< Remap USART7 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH3_USART8_RX            ((uint32_t)0x00000F00)        /*!< Remap USART8 Rx on DMA2 channel 3 */
+#define DMA_RMPCR2_CH4_TIM7_UP              ((uint32_t)0x00001000)        /*!< Remap TIM7 up on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_DAC_CH2              ((uint32_t)0x00001000)        /*!< Remap DAC channel 2 on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_SPI1_TX              ((uint32_t)0x00003000)        /*!< Remap SPI1 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART1_TX            ((uint32_t)0x00008000)        /*!< Remap USART1 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART2_TX            ((uint32_t)0x00009000)        /*!< Remap USART2 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART3_TX            ((uint32_t)0x0000A000)        /*!< Remap USART3 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART4_TX            ((uint32_t)0x0000B000)        /*!< Remap USART4 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART5_TX            ((uint32_t)0x0000C000)        /*!< Remap USART5 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART6_TX            ((uint32_t)0x0000D000)        /*!< Remap USART6 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART7_TX            ((uint32_t)0x0000E000)        /*!< Remap USART7 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH4_USART8_TX            ((uint32_t)0x0000F000)        /*!< Remap USART8 Tx on DMA2 channel 4 */
+#define DMA_RMPCR2_CH5_ADC                  ((uint32_t)0x00010000)        /*!< Remap ADC on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART1_TX            ((uint32_t)0x00080000)        /*!< Remap USART1 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART2_TX            ((uint32_t)0x00090000)        /*!< Remap USART2 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART3_TX            ((uint32_t)0x000A0000)        /*!< Remap USART3 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART4_TX            ((uint32_t)0x000B0000)        /*!< Remap USART4 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART5_TX            ((uint32_t)0x000C0000)        /*!< Remap USART5 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART6_TX            ((uint32_t)0x000D0000)        /*!< Remap USART6 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART7_TX            ((uint32_t)0x000E0000)        /*!< Remap USART7 Tx on DMA2 channel 5 */
+#define DMA_RMPCR2_CH5_USART8_TX            ((uint32_t)0x000F0000)        /*!< Remap USART8 Tx on DMA2 channel 5 */
+
 /******************************************************************************/
 /*                                                                            */
 /*                 External Interrupt/Event Controller (EXTI)                 */
@@ -3773,10 +4205,6 @@ typedef struct
 #define  RCC_CFGR_PLLMULL14                  RCC_CFGR_PLLMUL14        /*!< PLL input clock*14 */
 #define  RCC_CFGR_PLLMULL15                  RCC_CFGR_PLLMUL15        /*!< PLL input clock*15 */
 #define  RCC_CFGR_PLLMULL16                  RCC_CFGR_PLLMUL16        /*!< PLL input clock*16 */
-/*!< USB configuration */
-#define RCC_CFGR_USBPRE_Pos                      (22U)                         
-#define RCC_CFGR_USBPRE_Msk                      (0x1U << RCC_CFGR_USBPRE_Pos) /*!< 0x00400000 */
-#define RCC_CFGR_USBPRE                          RCC_CFGR_USBPRE_Msk           /*!< USB prescaler */
 
 #define  RCC_CFGR_MCO                        ((uint32_t)0x0F000000)        /*!< MCO[2:0] bits (Microcontroller Clock Output) */
 #define  RCC_CFGR_MCO_0                      ((uint32_t)0x01000000)        /*!< Bit 0 */
@@ -3834,6 +4262,9 @@ typedef struct
 /*****************  Bit definition for RCC_APB2RSTR register  *****************/
 #define  RCC_APB2RSTR_SYSCFGRST              ((uint32_t)0x00000001)        /*!< SYSCFG clock reset */
 #define  RCC_APB2RSTR_ADCRST                 ((uint32_t)0x00000200)        /*!< ADC clock reset */
+#define  RCC_APB2RSTR_USART8RST              ((uint32_t)0x00000080)        /*!< USART8 clock reset */
+#define  RCC_APB2RSTR_USART7RST              ((uint32_t)0x00000040)        /*!< USART7 clock reset */
+#define  RCC_APB2RSTR_USART6RST              ((uint32_t)0x00000020)        /*!< USART6 clock reset */
 #define  RCC_APB2RSTR_TIM1RST                ((uint32_t)0x00000800)        /*!< TIM1 clock reset */
 #define  RCC_APB2RSTR_SPI1RST                ((uint32_t)0x00001000)        /*!< SPI1 clock reset */
 #define  RCC_APB2RSTR_USART1RST              ((uint32_t)0x00004000)        /*!< USART1 clock reset */
@@ -3856,6 +4287,7 @@ typedef struct
 #define  RCC_APB1RSTR_USART2RST              ((uint32_t)0x00020000)        /*!< USART 2 clock reset */
 #define  RCC_APB1RSTR_USART3RST              ((uint32_t)0x00040000)        /*!< USART 3 clock reset */
 #define  RCC_APB1RSTR_USART4RST              ((uint32_t)0x00080000)        /*!< USART 4 clock reset */
+#define  RCC_APB1RSTR_USART5RST              ((uint32_t)0x00100000)        /*!< USART 5 clock reset */
 #define  RCC_APB1RSTR_I2C1RST                ((uint32_t)0x00200000)        /*!< I2C 1 clock reset */
 #define  RCC_APB1RSTR_I2C2RST                ((uint32_t)0x00400000)        /*!< I2C 2 clock reset */
 #define  RCC_APB1RSTR_USBRST                 ((uint32_t)0x00800000)        /*!< USB clock reset */
@@ -3867,6 +4299,7 @@ typedef struct
 
 /******************  Bit definition for RCC_AHBENR register  ******************/
 #define  RCC_AHBENR_DMAEN                    ((uint32_t)0x00000001)        /*!< DMA clock enable */
+#define  RCC_AHBENR_DMA2EN                   ((uint32_t)0x00000002)        /*!< DMA2 clock enable */
 #define  RCC_AHBENR_SRAMEN                   ((uint32_t)0x00000004)        /*!< SRAM interface clock enable */
 #define  RCC_AHBENR_FLITFEN                  ((uint32_t)0x00000010)        /*!< FLITF clock enable */
 #define  RCC_AHBENR_CRCEN                    ((uint32_t)0x00000040)        /*!< CRC clock enable */
@@ -3884,6 +4317,9 @@ typedef struct
 
 /*****************  Bit definition for RCC_APB2ENR register  ******************/
 #define  RCC_APB2ENR_SYSCFGCOMPEN            ((uint32_t)0x00000001)        /*!< SYSCFG and comparator clock enable */
+#define  RCC_APB2ENR_USART6EN                ((uint32_t)0x00000020)        /*!< USART6 clock enable */
+#define  RCC_APB2ENR_USART7EN                ((uint32_t)0x00000040)        /*!< USART7 clock enable */
+#define  RCC_APB2ENR_USART8EN                ((uint32_t)0x00000080)        /*!< USART8 clock enable */
 #define  RCC_APB2ENR_ADCEN                   ((uint32_t)0x00000200)        /*!< ADC1 clock enable */
 #define  RCC_APB2ENR_TIM1EN                  ((uint32_t)0x00000800)        /*!< TIM1 clock enable */
 #define  RCC_APB2ENR_SPI1EN                  ((uint32_t)0x00001000)        /*!< SPI1 clock enable */
@@ -3908,6 +4344,7 @@ typedef struct
 #define  RCC_APB1ENR_USART2EN                ((uint32_t)0x00020000)        /*!< USART2 clock enable */
 #define  RCC_APB1ENR_USART3EN                ((uint32_t)0x00040000)        /*!< USART3 clock enable */
 #define  RCC_APB1ENR_USART4EN                ((uint32_t)0x00080000)        /*!< USART4 clock enable */
+#define  RCC_APB1ENR_USART5EN                ((uint32_t)0x00100000)        /*!< USART5 clock enable */
 #define  RCC_APB1ENR_I2C1EN                  ((uint32_t)0x00200000)        /*!< I2C1 clock enable */
 #define  RCC_APB1ENR_I2C2EN                  ((uint32_t)0x00400000)        /*!< I2C2 clock enable */
 #define  RCC_APB1ENR_USBEN                   ((uint32_t)0x00800000)        /*!< USB clock enable */
@@ -3961,7 +4398,7 @@ typedef struct
 #define  RCC_AHBRSTR_GPIODRST                ((uint32_t)0x00010000)         /*!< GPIOD clock reset */
 #define  RCC_AHBRSTR_GPIOERST                ((uint32_t)0x00020000)         /*!< GPIOE clock reset */
 #define  RCC_AHBRSTR_GPIOFRST                ((uint32_t)0x00040000)         /*!< GPIOF clock reset */
-#define  RCC_AHBRSTR_TSCRST                   ((uint32_t)0x00100000)         /*!< TS clock reset */
+#define  RCC_AHBRSTR_TSCRST                  ((uint32_t)0x00100000)         /*!< TS clock reset */
 
 /* Old Bit definition maintained for legacy purpose */
 #define  RCC_AHBRSTR_TSRST                   RCC_AHBRSTR_TSCRST         /*!< TS clock reset */
@@ -4002,6 +4439,10 @@ typedef struct
 #define  RCC_CFGR3_USART2SW                  ((uint32_t)0x00030000)        /*!< USART2SW[1:0] bits */
 #define  RCC_CFGR3_USART2SW_0                ((uint32_t)0x00010000)        /*!< Bit 0 */
 #define  RCC_CFGR3_USART2SW_1                ((uint32_t)0x00020000)        /*!< Bit 1 */
+#define  RCC_CFGR3_USART3SW                  ((uint32_t)0x000C0000)        /*!< USART3SW[1:0] bits */
+#define  RCC_CFGR3_USART3SW_0                ((uint32_t)0x00040000)        /*!< Bit 0 */
+#define  RCC_CFGR3_USART3SW_1                ((uint32_t)0x00080000)        /*!< Bit 1 */
+
 
 /*******************  Bit definition for RCC_CR2 register  ********************/
 #define  RCC_CR2_HSI14ON                     ((uint32_t)0x00000001)        /*!< Internal High Speed 14MHz clock enable */
@@ -4418,6 +4859,9 @@ typedef struct
 #define SYSCFG_CFGR1_MEM_MODE               ((uint32_t)0x00000003) /*!< SYSCFG_Memory Remap Config */
 #define SYSCFG_CFGR1_MEM_MODE_0             ((uint32_t)0x00000001) /*!< SYSCFG_Memory Remap Config Bit 0 */
 #define SYSCFG_CFGR1_MEM_MODE_1             ((uint32_t)0x00000002) /*!< SYSCFG_Memory Remap Config Bit 1 */
+#define SYSCFG_CFGR1_IRDA_ENV_SEL           ((uint32_t)0x000000C0) /*!< IRDA_SEL_ENV config */
+#define SYSCFG_CFGR1_IRDA_ENV_SEL_0         ((uint32_t)0x00000040) /*!< IRDA_SEL_ENV Bit 0 */
+#define SYSCFG_CFGR1_IRDA_ENV_SEL_1         ((uint32_t)0x00000080) /*!< IRDA_SEL_ENV Bit 1 */
 #define SYSCFG_CFGR1_PA11_PA12_RMP          ((uint32_t)0x00000010) /*!< PA11 and PA12 remap on QFN28 and TSSOP20 packages (only for STM32F042 devices)*/
 #define SYSCFG_CFGR1_ADC_DMA_RMP            ((uint32_t)0x00000100) /*!< ADC DMA remap */
 #define SYSCFG_CFGR1_USART1TX_DMA_RMP       ((uint32_t)0x00000200) /*!< USART1 TX DMA remap */
@@ -4432,8 +4876,8 @@ typedef struct
 #define SYSCFG_CFGR1_I2C_FMP_PB9            ((uint32_t)0x00080000) /*!< I2C PB9 Fast mode plus */
 #define SYSCFG_CFGR1_I2C_FMP_I2C1           ((uint32_t)0x00100000) /*!< Enable Fast Mode Plus on PB10, PB11, PF6 and PF7(only for STM32F030, STM32F031 and STM32F072 devices) */
 #define SYSCFG_CFGR1_I2C_FMP_I2C2           ((uint32_t)0x00200000) /*!< Enable I2C2 Fast mode plus (only for STM32F072) */
-#define SYSCFG_CFGR1_I2C_FMP_PA9            ((uint32_t)0x00400000) /*!< Enable Fast Mode Plus on PA9 (only for STM32F030, STM32F031, STM32F042 and STM32F072 devices) */
-#define SYSCFG_CFGR1_I2C_FMP_PA10           ((uint32_t)0x00800000) /*!< Enable Fast Mode Plus on PA10(only for STM32F030, STM32F031, STM32F042 and STM32F072 devices) */
+#define SYSCFG_CFGR1_I2C_FMP_PA9            ((uint32_t)0x00400000) /*!< Enable Fast Mode Plus on PA9 (only for STM32F030, STM32F031, STM32F042, STM32F072 and STM32F091 devices) */
+#define SYSCFG_CFGR1_I2C_FMP_PA10           ((uint32_t)0x00800000) /*!< Enable Fast Mode Plus on PA10(only for STM32F030, STM32F031, STM32F042, STM32F072 and STM32F091 devices) */
 #define SYSCFG_CFGR1_SPI2_DMA_RMP           ((uint32_t)0x01000000) /*!< SPI2 DMA remap (only for STM32F072) */
 #define SYSCFG_CFGR1_USART2_DMA_RMP         ((uint32_t)0x02000000) /*!< USART2 DMA remap (only for STM32F072) */
 #define SYSCFG_CFGR1_USART3_DMA_RMP         ((uint32_t)0x04000000) /*!< USART3 DMA remap (only for STM32F072) */
@@ -4628,6 +5072,79 @@ typedef struct
 
 /* Old Bit definition maintained for legacy purpose */
 #define SYSCFG_CFGR2_SRAM_PE                   SYSCFG_CFGR2_SRAM_PEF
+
+/*****************  Bit definition for SYSCFG_xxx ISR Wrapper register  ****************/
+#define SYSCFG_ITLINE0_SR_EWDG                ((uint32_t)0x00000001) /*!< EWDG interrupt */
+#define SYSCFG_ITLINE1_SR_PVDOUT              ((uint32_t)0x00000001) /*!< Power voltage detection -> exti[31] Interrupt */
+#define SYSCFG_ITLINE1_SR_VDDIO2              ((uint32_t)0x00000002) /*!< VDDIO2 -> exti[16] Interrupt */
+#define SYSCFG_ITLINE2_SR_RTC_WAKEUP          ((uint32_t)0x00000001) /*!< RTC WAKEUP -> exti[20] Interrupt */
+#define SYSCFG_ITLINE2_SR_RTC_TSTAMP          ((uint32_t)0x00000002) /*!< RTC Time Stamp -> exti[19] interrupt */
+#define SYSCFG_ITLINE2_SR_RTC_ALRA            ((uint32_t)0x00000003) /*!< RTC Alarm -> exti[17] interrupt .... */
+#define SYSCFG_ITLINE3_SR_FLASH_ITF           ((uint32_t)0x00000001) /*!< Flash ITF Interrupt */
+#define SYSCFG_ITLINE4_SR_CRS                 ((uint32_t)0x00000001) /*!< CRS interrupt */
+#define SYSCFG_ITLINE4_SR_CLK_CTRL            ((uint32_t)0x00000002) /*!< CLK CTRL interrupt */
+#define SYSCFG_ITLINE5_SR_EXTI0               ((uint32_t)0x00000001) /*!< External Interrupt 0 */
+#define SYSCFG_ITLINE5_SR_EXTI1               ((uint32_t)0x00000002) /*!< External Interrupt 1 */
+#define SYSCFG_ITLINE6_SR_EXTI2               ((uint32_t)0x00000001) /*!< External Interrupt 2 */
+#define SYSCFG_ITLINE6_SR_EXTI3               ((uint32_t)0x00000002) /*!< External Interrupt 3 */
+#define SYSCFG_ITLINE7_SR_EXTI4               ((uint32_t)0x00000001) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI5               ((uint32_t)0x00000002) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI6               ((uint32_t)0x00000004) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI7               ((uint32_t)0x00000008) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI8               ((uint32_t)0x00000010) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI9               ((uint32_t)0x00000020) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI10              ((uint32_t)0x00000040) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI11              ((uint32_t)0x00000080) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI12              ((uint32_t)0x00000100) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI13              ((uint32_t)0x00000200) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI14              ((uint32_t)0x00000400) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE7_SR_EXTI15              ((uint32_t)0x00000800) /*!< External Interrupt 15 to 4 */
+#define SYSCFG_ITLINE8_SR_TSC_EOA             ((uint32_t)0x00000001) /*!< Touch control EOA Interrupt */
+#define SYSCFG_ITLINE8_SR_TSC_MCE             ((uint32_t)0x00000002) /*!< Touch control MCE Interrupt */
+#define SYSCFG_ITLINE9_SR_DMA1_CH1            ((uint32_t)0x00000001) /*!< DMA1 Channel 1 Interrupt */
+#define SYSCFG_ITLINE10_SR_DMA1_CH2           ((uint32_t)0x00000001) /*!< DMA1 Channel 2 Interrupt */
+#define SYSCFG_ITLINE10_SR_DMA1_CH3           ((uint32_t)0x00000002) /*!< DMA2 Channel 3 Interrupt */
+#define SYSCFG_ITLINE10_SR_DMA2_CH1           ((uint32_t)0x00000004) /*!< DMA2 Channel 1 Interrupt */
+#define SYSCFG_ITLINE10_SR_DMA2_CH2           ((uint32_t)0x00000008) /*!< DMA2 Channel 2 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA1_CH4           ((uint32_t)0x00000001) /*!< DMA1 Channel 4 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA1_CH5           ((uint32_t)0x00000002) /*!< DMA1 Channel 5 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA1_CH6           ((uint32_t)0x00000004) /*!< DMA1 Channel 6 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA1_CH7           ((uint32_t)0x00000008) /*!< DMA1 Channel 7 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA2_CH3           ((uint32_t)0x00000010) /*!< DMA2 Channel 3 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA2_CH4           ((uint32_t)0x00000020) /*!< DMA2 Channel 4 Interrupt */
+#define SYSCFG_ITLINE11_SR_DMA2_CH5           ((uint32_t)0x00000040) /*!< DMA2 Channel 5 Interrupt */
+#define SYSCFG_ITLINE12_SR_ADC                ((uint32_t)0x00000001) /*!< ADC Interrupt */
+#define SYSCFG_ITLINE12_SR_COMP1              ((uint32_t)0x00000002) /*!< COMP1 Interrupt -> exti[21] */
+#define SYSCFG_ITLINE12_SR_COMP2              ((uint32_t)0x00000004) /*!< COMP2 Interrupt -> exti[22] */
+#define SYSCFG_ITLINE13_SR_TIM1_BRK           ((uint32_t)0x00000001) /*!< TIM1 BRK Interrupt */
+#define SYSCFG_ITLINE13_SR_TIM1_UPD           ((uint32_t)0x00000002) /*!< TIM1 UPD Interrupt */
+#define SYSCFG_ITLINE13_SR_TIM1_TRG           ((uint32_t)0x00000004) /*!< TIM1 TRG Interrupt */
+#define SYSCFG_ITLINE13_SR_TIM1_CCU           ((uint32_t)0x00000008) /*!< TIM1 CCU Interrupt */
+#define SYSCFG_ITLINE14_SR_TIM1_CC            ((uint32_t)0x00000001) /*!< TIM1 CC Interrupt */
+#define SYSCFG_ITLINE15_SR_TIM2_GLB           ((uint32_t)0x00000001) /*!< TIM2 GLB Interrupt */
+#define SYSCFG_ITLINE16_SR_TIM3_GLB           ((uint32_t)0x00000001) /*!< TIM3 GLB Interrupt */
+#define SYSCFG_ITLINE17_SR_DAC                ((uint32_t)0x00000001) /*!< DAC Interrupt */
+#define SYSCFG_ITLINE17_SR_TIM6_GLB           ((uint32_t)0x00000002) /*!< TIM6 GLB Interrupt */
+#define SYSCFG_ITLINE18_SR_TIM7_GLB           ((uint32_t)0x00000001) /*!< TIM7 GLB Interrupt */
+#define SYSCFG_ITLINE19_SR_TIM14_GLB          ((uint32_t)0x00000001) /*!< TIM14 GLB Interrupt */
+#define SYSCFG_ITLINE20_SR_TIM15_GLB          ((uint32_t)0x00000001) /*!< TIM15 GLB Interrupt */
+#define SYSCFG_ITLINE21_SR_TIM16_GLB          ((uint32_t)0x00000001) /*!< TIM16 GLB Interrupt */
+#define SYSCFG_ITLINE22_SR_TIM17_GLB          ((uint32_t)0x00000001) /*!< TIM17 GLB Interrupt */
+#define SYSCFG_ITLINE23_SR_I2C1_GLB           ((uint32_t)0x00000001) /*!< I2C1 GLB Interrupt -> exti[23] */
+#define SYSCFG_ITLINE24_SR_I2C2_GLB           ((uint32_t)0x00000001) /*!< I2C2 GLB Interrupt */
+#define SYSCFG_ITLINE25_SR_SPI1               ((uint32_t)0x00000001) /*!< SPI1 Interrupt */
+#define SYSCFG_ITLINE26_SR_SPI2               ((uint32_t)0x00000001) /*!< SPI2  Interrupt */
+#define SYSCFG_ITLINE27_SR_USART1_GLB         ((uint32_t)0x00000001) /*!< USART1 GLB Interrupt -> exti[25] */
+#define SYSCFG_ITLINE28_SR_USART2_GLB         ((uint32_t)0x00000001) /*!< USART2 GLB Interrupt -> exti[26] */
+#define SYSCFG_ITLINE29_SR_USART3_GLB         ((uint32_t)0x00000001) /*!< USART3 GLB Interrupt -> exti[28] */
+#define SYSCFG_ITLINE29_SR_USART4_GLB         ((uint32_t)0x00000002) /*!< USART4 GLB Interrupt */
+#define SYSCFG_ITLINE29_SR_USART5_GLB         ((uint32_t)0x00000004) /*!< USART5 GLB Interrupt */
+#define SYSCFG_ITLINE29_SR_USART6_GLB         ((uint32_t)0x00000008) /*!< USART6 GLB Interrupt */
+#define SYSCFG_ITLINE29_SR_USART7_GLB         ((uint32_t)0x00000010) /*!< USART7 GLB Interrupt */
+#define SYSCFG_ITLINE29_SR_USART8_GLB         ((uint32_t)0x00000020) /*!< USART8 GLB Interrupt */
+#define SYSCFG_ITLINE30_SR_CAN                ((uint32_t)0x00000001) /*!< CAN Interrupt */
+#define SYSCFG_ITLINE30_SR_CEC                ((uint32_t)0x00000002) /*!< CEC Interrupt */
+
 /******************************************************************************/
 /*                                                                            */
 /*                               Timers (TIM)                                 */
@@ -5114,137 +5631,211 @@ typedef struct
 
 /*******************  Bit definition for WWDG_SR register  ********************/
 #define  WWDG_SR_EWIF                        ((uint8_t)0x01)               /*!< Early Wakeup Interrupt Flag */
+
+#if defined (STM32F091)
 /******************************************************************************/
-/*                                                                            */
-/*                         USB Device General registers                       */
-/*                                                                            */
+/*  For a painless codes migration between the STM32F0xx device product       */
+/*  lines, the aliases defined below are put in place to overcome the         */
+/*  differences in the interrupt handlers and IRQn definitions.               */
+/*  No need to update developed interrupt code when moving across             */ 
+/*  product lines within the same STM32L0 Family                              */
 /******************************************************************************/
-#define USB_CNTR                             (USB_BASE + 0x40)             /*!< Control register */
-#define USB_ISTR                             (USB_BASE + 0x44)             /*!< Interrupt status register */
-#define USB_FNR                              (USB_BASE + 0x48)             /*!< Frame number register */
-#define USB_DADDR                            (USB_BASE + 0x4C)             /*!< Device address register */
-#define USB_BTABLE                           (USB_BASE + 0x50)             /*!< Buffer Table address register */
-#define USB_LPMCSR                           (USB_BASE + 0x54)             /*!< LPM Control and Status register */
-#define USB_BCDR                             (USB_BASE + 0x58)             /*!< Battery Charging detector register*/
 
-/****************************  ISTR interrupt events  *************************/
-#define USB_ISTR_CTR                         ((uint16_t)0x8000U)               /*!< Correct TRansfer (clear-only bit) */
-#define USB_ISTR_PMAOVR                      ((uint16_t)0x4000U)               /*!< DMA OVeR/underrun (clear-only bit) */
-#define USB_ISTR_ERR                         ((uint16_t)0x2000U)               /*!< ERRor (clear-only bit) */
-#define USB_ISTR_WKUP                        ((uint16_t)0x1000U)               /*!< WaKe UP (clear-only bit) */
-#define USB_ISTR_SUSP                        ((uint16_t)0x0800U)               /*!< SUSPend (clear-only bit) */
-#define USB_ISTR_RESET                       ((uint16_t)0x0400U)               /*!< RESET (clear-only bit) */
-#define USB_ISTR_SOF                         ((uint16_t)0x0200U)               /*!< Start Of Frame (clear-only bit) */
-#define USB_ISTR_ESOF                        ((uint16_t)0x0100U)               /*!< Expected Start Of Frame (clear-only bit) */
-#define USB_ISTR_L1REQ                       ((uint16_t)0x0080U)               /*!< LPM L1 state request  */
-#define USB_ISTR_DIR                         ((uint16_t)0x0010U)               /*!< DIRection of transaction (read-only bit)  */
-#define USB_ISTR_EP_ID                       ((uint16_t)0x000FU)               /*!< EndPoint IDentifier (read-only bit)  */
+/* Aliases for __IRQn */
+#define PVD_IRQn                          PVD_VDDIO2_IRQn
+#define RCC_IRQn                          RCC_CRS_IRQn
+#define TS_IRQn                           TSC_IRQn
+#define DMA1_Channel1_IRQn                DMA1_Ch1_IRQn
+#define DMA1_Channel2_3_IRQn              DMA1_Ch2_3_DMA2_Ch1_2_IRQn
+#define DMA1_Channel4_5_IRQn              DMA1_Ch4_7_DMA2_Ch3_5_IRQn
+#define DMA1_Channel4_5_6_7_IRQn          DMA1_Ch4_7_DMA2_Ch3_5_IRQn
+#define ADC1_IRQn                         ADC1_COMP_IRQn
+#define USART3_4_IRQn                     USART3_8_IRQn
+#define CEC_IRQn                          CEC_CAN_IRQn
 
-#define USB_CLR_CTR                          (~USB_ISTR_CTR)             /*!< clear Correct TRansfer bit */
-#define USB_CLR_PMAOVR                       (~USB_ISTR_PMAOVR)          /*!< clear DMA OVeR/underrun bit*/
-#define USB_CLR_ERR                          (~USB_ISTR_ERR)             /*!< clear ERRor bit */
-#define USB_CLR_WKUP                         (~USB_ISTR_WKUP)            /*!< clear WaKe UP bit */
-#define USB_CLR_SUSP                         (~USB_ISTR_SUSP)            /*!< clear SUSPend bit */
-#define USB_CLR_RESET                        (~USB_ISTR_RESET)           /*!< clear RESET bit */
-#define USB_CLR_SOF                          (~USB_ISTR_SOF)             /*!< clear Start Of Frame bit */
-#define USB_CLR_ESOF                         (~USB_ISTR_ESOF)            /*!< clear Expected Start Of Frame bit */
-#define USB_CLR_L1REQ                        (~USB_ISTR_L1REQ)           /*!< clear LPM L1  bit */
+/* Aliases for __IRQHandler */
+#define PVD_IRQHandler                    PVD_VDDIO2_IRQHandler
+#define RCC_IRQHandler                    RCC_CRS_IRQHandler
+#define TS_IRQHandler                     TSC_IRQHandler 
+#define DMA1_Channel1_IRQHandler          DMA1_Ch1_IRQHandler
+#define DMA1_Channel2_3_IRQHandler        DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler
+#define DMA1_Channel4_5_IRQHandler        DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler
+#define DMA1_Channel4_5_6_7_IRQHandler    DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler
+#define ADC1_IRQHandler                   ADC1_COMP_IRQHandler
+#define USART3_4_IRQHandler               USART3_8_IRQHandler
+#define CEC_IRQHandler                    CEC_CAN_IRQHandler 
 
-/*************************  CNTR control register bits definitions  ***********/
-#define USB_CNTR_CTRM                        ((uint16_t)0x8000U)               /*!< Correct TRansfer Mask */
-#define USB_CNTR_PMAOVRM                     ((uint16_t)0x4000U)               /*!< DMA OVeR/underrun Mask */
-#define USB_CNTR_ERRM                        ((uint16_t)0x2000U)               /*!< ERRor Mask */
-#define USB_CNTR_WKUPM                       ((uint16_t)0x1000U)               /*!< WaKe UP Mask */
-#define USB_CNTR_SUSPM                       ((uint16_t)0x0800U)               /*!< SUSPend Mask */
-#define USB_CNTR_RESETM                      ((uint16_t)0x0400U)               /*!< RESET Mask   */
-#define USB_CNTR_SOFM                        ((uint16_t)0x0200U)               /*!< Start Of Frame Mask */
-#define USB_CNTR_ESOFM                       ((uint16_t)0x0100U)               /*!< Expected Start Of Frame Mask */
-#define USB_CNTR_L1REQM                      ((uint16_t)0x0080U)               /*!< LPM L1 state request interrupt mask */
-#define USB_CNTR_L1RESUME                    ((uint16_t)0x0020U)               /*!< LPM L1 Resume request */
-#define USB_CNTR_RESUME                      ((uint16_t)0x0010U)               /*!< RESUME request */
-#define USB_CNTR_FSUSP                       ((uint16_t)0x0008U)               /*!< Force SUSPend */
-#define USB_CNTR_LPMODE                      ((uint16_t)0x0004U)               /*!< Low-power MODE */
-#define USB_CNTR_PDWN                        ((uint16_t)0x0002U)               /*!< Power DoWN */
-#define USB_CNTR_FRES                        ((uint16_t)0x0001U)               /*!< Force USB RESet */
+#elif defined (STM32F072)
+/* Aliases for __IRQn */
+#define PVD_IRQn                          PVD_VDDIO2_IRQn
+#define RCC_IRQn                          RCC_CRS_IRQn
+#define TS_IRQn                           TSC_IRQn
+#define DMA1_Ch1_IRQn                     DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn        DMA1_Channel2_3_IRQn           
+#define DMA1_Channel4_5_IRQn              DMA1_Channel4_5_6_7_IRQn
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn        DMA1_Channel4_5_6_7_IRQn          
+#define ADC1_IRQn                         ADC1_COMP_IRQn
+#define USART3_8_IRQn                     USART3_4_IRQn
+#define CEC_IRQn                          CEC_CAN_IRQn
 
-/*************************  BCDR control register bits definitions  ***********/
-#define USB_BCDR_DPPU                        ((uint16_t)0x8000U)               /*!< DP Pull-up Enable */  
-#define USB_BCDR_PS2DET                      ((uint16_t)0x0080U)               /*!< PS2 port or proprietary charger detected */  
-#define USB_BCDR_SDET                        ((uint16_t)0x0040U)               /*!< Secondary detection (SD) status */  
-#define USB_BCDR_PDET                        ((uint16_t)0x0020U)               /*!< Primary detection (PD) status */ 
-#define USB_BCDR_DCDET                       ((uint16_t)0x0010U)               /*!< Data contact detection (DCD) status */ 
-#define USB_BCDR_SDEN                        ((uint16_t)0x0008U)               /*!< Secondary detection (SD) mode enable */ 
-#define USB_BCDR_PDEN                        ((uint16_t)0x0004U)               /*!< Primary detection (PD) mode enable */  
-#define USB_BCDR_DCDEN                       ((uint16_t)0x0002U)               /*!< Data contact detection (DCD) mode enable */
-#define USB_BCDR_BCDEN                       ((uint16_t)0x0001U)               /*!< Battery charging detector (BCD) enable */
+/* Aliases for __IRQHandler */
+#define PVD_IRQHandler                    PVD_VDDIO2_IRQHandler
+#define RCC_IRQHandler                    RCC_CRS_IRQHandler
+#define TS_IRQHandler                     TSC_IRQHandler 
+#define DMA1_Ch1_IRQHandler               DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler  DMA1_Channel2_3_IRQHandler      
+#define DMA1_Channel4_5_IRQHandler        DMA1_Channel4_5_6_7_IRQHandler
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler  DMA1_Channel4_5_6_7_IRQHandler
+#define ADC1_IRQHandler                   ADC1_COMP_IRQHandler
+#define USART3_8_IRQHandler               USART3_4_IRQHandler
+#define CEC_IRQHandler                    CEC_CAN_IRQHandler 
 
-/***************************  LPM register bits definitions  ******************/
-#define USB_LPMCSR_BESL                      ((uint16_t)0x00F0U)               /*!< BESL value received with last ACKed LPM Token  */ 
-#define USB_LPMCSR_REMWAKE                   ((uint16_t)0x0008U)               /*!< bRemoteWake value received with last ACKed LPM Token */ 
-#define USB_LPMCSR_LPMACK                    ((uint16_t)0x0002U)               /*!< LPM Token acknowledge enable*/
-#define USB_LPMCSR_LMPEN                     ((uint16_t)0x0001U)               /*!< LPM support enable  */
+#elif defined (STM32F051)
+/* Aliases for __IRQn */
+#define PVD_VDDIO2_IRQn                   PVD_IRQn                          
+#define RCC_CRS_IRQn                      RCC_IRQn
+#define TSC_IRQn                          TS_IRQn                           
+#define DMA1_Ch1_IRQn                     DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn        DMA1_Channel2_3_IRQn 
+#define DMA1_Channel4_5_6_7_IRQn          DMA1_Channel4_5_IRQn 
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn        DMA1_Channel4_5_IRQn             
+#define ADC1_IRQn                         ADC1_COMP_IRQn
+#define CEC_CAN_IRQn                      CEC_IRQn
 
-/********************  FNR Frame Number Register bit definitions   ************/
-#define USB_FNR_RXDP                         ((uint16_t)0x8000U)               /*!< status of D+ data line */
-#define USB_FNR_RXDM                         ((uint16_t)0x4000U)               /*!< status of D- data line */
-#define USB_FNR_LCK                          ((uint16_t)0x2000U)               /*!< LoCKed */
-#define USB_FNR_LSOF                         ((uint16_t)0x1800U)               /*!< Lost SOF */
-#define USB_FNR_FN                           ((uint16_t)0x07FFU)               /*!< Frame Number */
+/* Aliases for __IRQHandler */
+#define PVD_VDDIO2_IRQHandler             PVD_IRQHandler                         
+#define RCC_CRS_IRQHandler                RCC_IRQHandler
+#define TSC_IRQHandler                    TS_IRQHandler                           
+#define DMA1_Ch1_IRQHandler               DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler  DMA1_Channel2_3_IRQHandler 
+#define DMA1_Channel4_5_6_7_IRQHandler    DMA1_Channel4_5_IRQHandler 
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler  DMA1_Channel4_5_IRQHandler             
+#define ADC1_IRQHandler                   ADC1_COMP_IRQHandler
+#define CEC_CAN_IRQHandler                CEC_IRQHandler
 
-/********************  DADDR Device ADDRess bit definitions    ****************/
-#define USB_DADDR_EF                         ((uint8_t)0x80U)                  /*!< USB device address Enable Function */
-#define USB_DADDR_ADD                        ((uint8_t)0x7FU)                  /*!< USB device address */
+#elif defined (STM32F042)
+/* Aliases for __IRQn */
+#define PVD_IRQn                          PVD_VDDIO2_IRQn
+#define RCC_IRQn                          RCC_CRS_IRQn
+#define TS_IRQn                           TSC_IRQn
+#define DMA1_Ch1_IRQn                     DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn        DMA1_Channel2_3_IRQn           
+#define DMA1_Channel4_5_IRQn              DMA1_Channel4_5_6_7_IRQn
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn        DMA1_Channel4_5_6_7_IRQn          
+#define ADC1_COMP_IRQn                    ADC1_IRQn                         
+#define CEC_IRQn                          CEC_CAN_IRQn
 
-/******************************  Endpoint register    *************************/
-#define USB_EP0R                             USB_BASE                   /*!< endpoint 0 register address */
-#define USB_EP1R                             (USB_BASE + 0x04)           /*!< endpoint 1 register address */
-#define USB_EP2R                             (USB_BASE + 0x08)           /*!< endpoint 2 register address */
-#define USB_EP3R                             (USB_BASE + 0x0C)           /*!< endpoint 3 register address */
-#define USB_EP4R                             (USB_BASE + 0x10)           /*!< endpoint 4 register address */
-#define USB_EP5R                             (USB_BASE + 0x14)           /*!< endpoint 5 register address */
-#define USB_EP6R                             (USB_BASE + 0x18)           /*!< endpoint 6 register address */
-#define USB_EP7R                             (USB_BASE + 0x1C)           /*!< endpoint 7 register address */
-/* bit positions */ 
-#define USB_EP_CTR_RX                        ((uint16_t)0x8000U)               /*!<  EndPoint Correct TRansfer RX */
-#define USB_EP_DTOG_RX                       ((uint16_t)0x4000U)               /*!<  EndPoint Data TOGGLE RX */
-#define USB_EPRX_STAT                        ((uint16_t)0x3000U)               /*!<  EndPoint RX STATus bit field */
-#define USB_EP_SETUP                         ((uint16_t)0x0800U)               /*!<  EndPoint SETUP */
-#define USB_EP_T_FIELD                       ((uint16_t)0x0600U)               /*!<  EndPoint TYPE */
-#define USB_EP_KIND                          ((uint16_t)0x0100U)               /*!<  EndPoint KIND */
-#define USB_EP_CTR_TX                        ((uint16_t)0x0080U)               /*!<  EndPoint Correct TRansfer TX */
-#define USB_EP_DTOG_TX                       ((uint16_t)0x0040U)               /*!<  EndPoint Data TOGGLE TX */
-#define USB_EPTX_STAT                        ((uint16_t)0x0030U)               /*!<  EndPoint TX STATus bit field */
-#define USB_EPADDR_FIELD                     ((uint16_t)0x000FU)               /*!<  EndPoint ADDRess FIELD */
+/* Aliases for __IRQHandler */
+#define PVD_IRQHandler                    PVD_VDDIO2_IRQHandler
+#define RCC_IRQHandler                    RCC_CRS_IRQHandler
+#define TS_IRQHandler                     TSC_IRQHandler 
+#define DMA1_Ch1_IRQHandler               DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler  DMA1_Channel2_3_IRQHandler      
+#define DMA1_Channel4_5_IRQHandler        DMA1_Channel4_5_6_7_IRQHandler
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler  DMA1_Channel4_5_6_7_IRQHandler
+#define ADC1_COMP_IRQHandler              ADC1_IRQHandler                   
+#define CEC_IRQHandler                    CEC_CAN_IRQHandler 
 
-/* EndPoint REGister MASK (no toggle fields) */
-#define USB_EPREG_MASK     (USB_EP_CTR_RX|USB_EP_SETUP|USB_EP_T_FIELD|USB_EP_KIND|USB_EP_CTR_TX|USB_EPADDR_FIELD)
-                                                                               /*!< EP_TYPE[1:0] EndPoint TYPE */
-#define USB_EP_TYPE_MASK                     ((uint16_t)0x0600U)               /*!< EndPoint TYPE Mask */
-#define USB_EP_BULK                          ((uint16_t)0x0000U)               /*!< EndPoint BULK */
-#define USB_EP_CONTROL                       ((uint16_t)0x0200U)               /*!< EndPoint CONTROL */
-#define USB_EP_ISOCHRONOUS                   ((uint16_t)0x0400U)               /*!< EndPoint ISOCHRONOUS */
-#define USB_EP_INTERRUPT                     ((uint16_t)0x0600U)               /*!< EndPoint INTERRUPT */
-#define USB_EP_T_MASK                        (((uint16_t)(~USB_EP_T_FIELD)) & USB_EPREG_MASK)
-                                                                 
-#define USB_EPKIND_MASK    (~USB_EP_KIND & USB_EPREG_MASK)            /*!< EP_KIND EndPoint KIND */
-                                                                               /*!< STAT_TX[1:0] STATus for TX transfer */
-#define USB_EP_TX_DIS                        ((uint16_t)0x0000U)               /*!< EndPoint TX DISabled */
-#define USB_EP_TX_STALL                      ((uint16_t)0x0010U)               /*!< EndPoint TX STALLed */
-#define USB_EP_TX_NAK                        ((uint16_t)0x0020U)               /*!< EndPoint TX NAKed */
-#define USB_EP_TX_VALID                      ((uint16_t)0x0030U)               /*!< EndPoint TX VALID */
-#define USB_EPTX_DTOG1                       ((uint16_t)0x0010U)               /*!< EndPoint TX Data TOGgle bit1 */
-#define USB_EPTX_DTOG2                       ((uint16_t)0x0020U)               /*!< EndPoint TX Data TOGgle bit2 */
-#define USB_EPTX_DTOGMASK  (USB_EPTX_STAT|USB_EPREG_MASK)
-                                                                               /*!< STAT_RX[1:0] STATus for RX transfer */
-#define USB_EP_RX_DIS                        ((uint16_t)0x0000U)               /*!< EndPoint RX DISabled */
-#define USB_EP_RX_STALL                      ((uint16_t)0x1000U)               /*!< EndPoint RX STALLed */
-#define USB_EP_RX_NAK                        ((uint16_t)0x2000U)               /*!< EndPoint RX NAKed */
-#define USB_EP_RX_VALID                      ((uint16_t)0x3000U)               /*!< EndPoint RX VALID */
-#define USB_EPRX_DTOG1                       ((uint16_t)0x1000U)               /*!< EndPoint RX Data TOGgle bit1 */
-#define USB_EPRX_DTOG2                       ((uint16_t)0x2000U)               /*!< EndPoint RX Data TOGgle bit1 */
-#define USB_EPRX_DTOGMASK  (USB_EPRX_STAT|USB_EPREG_MASK)
+#elif defined (STM32F031)
+/* Aliases for __IRQn */
+#define PVD_VDDIO2_IRQn                   PVD_IRQn                          
+#define RCC_CRS_IRQn                      RCC_IRQn                         
+#define DMA1_Ch1_IRQn                     DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn        DMA1_Channel2_3_IRQn 
+#define DMA1_Channel4_5_6_7_IRQn          DMA1_Channel4_5_IRQn 
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn        DMA1_Channel4_5_IRQn             
+#define ADC1_COMP_IRQn                    ADC1_IRQn                         
 
+/* Aliases for __IRQHandler */
+#define PVD_VDDIO2_IRQHandler             PVD_IRQHandler                         
+#define RCC_CRS_IRQHandler                RCC_IRQHandler                          
+#define DMA1_Ch1_IRQHandler               DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler  DMA1_Channel2_3_IRQHandler 
+#define DMA1_Channel4_5_6_7_IRQHandler    DMA1_Channel4_5_IRQHandler 
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler  DMA1_Channel4_5_IRQHandler             
+#define ADC1_COMP_IRQHandler              ADC1_IRQHandler                   
+  
+#elif defined (STM32F030)
+/* Aliases for __IRQn */
+#define RCC_CRS_IRQn                      RCC_IRQn
+#define DMA1_Ch1_IRQn                     DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn        DMA1_Channel2_3_IRQn
+#define DMA1_Channel4_5_6_7_IRQn          DMA1_Channel4_5_IRQn 
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn        DMA1_Channel4_5_IRQn
+#define ADC1_COMP_IRQn                    ADC1_IRQn
 
+/* Aliases for __IRQHandler */
+#define RCC_CRS_IRQHandler                RCC_IRQHandler
+#define DMA1_Ch1_IRQHandler               DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler  DMA1_Channel2_3_IRQHandler
+#define DMA1_Channel4_5_6_7_IRQHandler    DMA1_Channel4_5_IRQHandler 
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler  DMA1_Channel4_5_IRQHandler
+#define ADC1_COMP_IRQHandler              ADC1_IRQHandler
+
+#elif defined (STM32F070xB)
+/* Aliases for __IRQn */              
+#define RCC_CRS_IRQn                       RCC_IRQn
+#define DMA1_Ch1_IRQn                      DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn         DMA1_Channel2_3_IRQn
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn         DMA1_Channel4_5_IRQn
+#define DMA1_Channel4_5_6_7_IRQn           DMA1_Channel4_5_IRQn
+#define ADC1_COMP_IRQn                     ADC1_IRQn
+#define TIM6_DAC_IRQn                      TIM6_IRQn
+#define USART3_8_IRQn                      USART3_4_IRQn
+#define USART3_6_IRQn                      USART3_4_IRQn
+
+/* Aliases for __IRQHandler */       
+#define RCC_CRS_IRQHandler                 RCC_IRQHandler
+#define DMA1_Ch1_IRQHandler                DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler   DMA1_Channel2_3_IRQHandler
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler   DMA1_Channel4_5_IRQHandler
+#define DMA1_Channel4_5_6_7_IRQHandler     DMA1_Channel4_5_IRQHandler
+#define ADC1_COMP_IRQHandler               ADC1_IRQHandler
+#define TIM6_DAC_IRQHandler                TIM6_IRQHandler
+#define USART3_8_IRQHandler                USART3_4_IRQHandler
+#define USART3_6_IRQHandler                USART3_4_IRQHandler
+
+#elif defined (STM32F070x6)
+/* Aliases for __IRQn */
+#define RCC_CRS_IRQn                       RCC_IRQn
+#define DMA1_Ch1_IRQn                      DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn         DMA1_Channel2_3_IRQn
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn         DMA1_Channel4_5_IRQn
+#define DMA1_Channel4_5_6_7_IRQn           DMA1_Channel4_5_IRQn
+#define ADC1_COMP_IRQn                     ADC1_IRQn
+
+/* Aliases for __IRQHandler */
+#define RCC_CRS_IRQHandler                 RCC_IRQHandler
+#define DMA1_Ch1_IRQHandler                DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler   DMA1_Channel2_3_IRQHandler
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler   DMA1_Channel4_5_IRQHandler
+#define DMA1_Channel4_5_6_7_IRQHandler     DMA1_Channel4_5_IRQHandler
+#define ADC1_COMP_IRQHandler               ADC1_IRQHandler
+
+#elif defined (STM32F030xC)
+/* Aliases for __IRQn */
+#define RCC_CRS_IRQn                       RCC_IRQn
+#define DMA1_Ch1_IRQn                      DMA1_Channel1_IRQn
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQn         DMA1_Channel2_3_IRQn
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQn         DMA1_Channel4_5_IRQn
+#define DMA1_Channel4_5_6_7_IRQn           DMA1_Channel4_5_IRQn
+#define ADC1_COMP_IRQn                     ADC1_IRQn
+#define TIM6_DAC_IRQn                      TIM6_IRQn
+#define USART3_8_IRQn                      USART3_6_IRQn
+#define USART3_4_IRQn                      USART3_6_IRQn
+
+/* Aliases for __IRQHandler */       
+#define RCC_CRS_IRQHandler                 RCC_IRQHandler
+#define DMA1_Ch1_IRQHandler                DMA1_Channel1_IRQHandler
+#define DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler   DMA1_Channel2_3_IRQHandler
+#define DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler   DMA1_Channel4_5_IRQHandler
+#define DMA1_Channel4_5_6_7_IRQHandler     DMA1_Channel4_5_IRQHandler
+#define ADC1_COMP_IRQHandler               ADC1_IRQHandler
+#define TIM6_DAC_IRQHandler                TIM6_IRQHandler
+#define USART3_8_IRQHandler                USART3_6_IRQHandler
+#define USART3_4_IRQHandler                USART3_6_IRQHandler
+
+#endif /* STM32F091 */
 /**
   * @}
   */
@@ -5263,7 +5854,7 @@ typedef struct
 /**
   * @}
   */
-
+  
 #ifdef __cplusplus
 }
 #endif

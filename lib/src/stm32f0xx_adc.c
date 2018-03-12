@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_adc.c
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Analog to Digital Convertor (ADC) peripheral:
   *           + Initialization and Configuration
@@ -75,9 +75,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_adc.h"
 #include "stm32f0xx_rcc.h"
-
-
-#include "app_types.h"
 
 /** @addtogroup STM32F0xx_StdPeriph_Driver
   * @{
@@ -724,11 +721,10 @@ void ADC_ChannelConfig(ADC_TypeDef* ADCx, uint32_t ADC_Channel, uint32_t ADC_Sam
   assert_param(IS_ADC_SAMPLE_TIME(ADC_SampleTime));
 
   /* Configure the ADC Channel */
-  // ADCx->CHSELR |= (uint32_t)ADC_Channel;
-  ADCx->CHSELR = (uint32_t)ADC_Channel;
+  ADCx->CHSELR |= (uint32_t)ADC_Channel;
 
   /* Clear the Sampling time Selection bits */
-  tmpreg &= ~ADC_SMPR1_SMPR;        // 0x00000007
+  tmpreg &= ~ADC_SMPR1_SMPR;
 
   /* Set the ADC Sampling Time register */
   tmpreg |= (uint32_t)ADC_SampleTime;
@@ -849,8 +845,6 @@ uint32_t ADC_GetCalibrationFactor(ADC_TypeDef* ADCx)
   }
   else
   {
-    APP_printf("\n\r ADC Calibration Factor Error \n\r");
-
     /* Error factor */
     tmpreg = 0x00000000;
   }
@@ -1106,7 +1100,7 @@ void ADC_ITConfig(ADC_TypeDef* ADCx, uint32_t ADC_IT, FunctionalState NewState)
   *            @arg ADC_FLAG_ADSTART: ADC start flag 
   *            @arg ADC_FLAG_ADSTP: ADC stop flag
   *            @arg ADC_FLAG_ADCAL: ADC Calibration flag
-  * @retval The new state of ADC_FLAG (SET or RESET). 0x01000001
+  * @retval The new state of ADC_FLAG (SET or RESET).
   */
 FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
 {
