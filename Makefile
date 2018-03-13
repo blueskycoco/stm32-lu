@@ -86,8 +86,8 @@ ${COMPILER}/net.axf: ${COMPILER}/usbd_desc.o
 ${COMPILER}/net.axf: ${COMPILER}/usbd_ioreq.o
 ${COMPILER}/net.axf: ${COMPILER}/stm32f0xx_rcc.o
 ${COMPILER}/net.axf: ${COMPILER}/stm32f0xx_gpio.o
-${COMPILER}/net.axf: stm32f3xx_flash.ld
-SCATTERgcc_net=stm32f3xx_flash.ld
+${COMPILER}/net.axf: stm32f0xx_flash.ld
+SCATTERgcc_net=stm32f0xx_flash.ld
 ENTRY_net=ResetISR
 CFLAGSgcc=-DSTM32F070x6 -DUSE_STDPERIPH_DRIVER
 
