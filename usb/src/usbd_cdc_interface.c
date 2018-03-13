@@ -59,9 +59,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define APP_RX_DATA_SIZE  2048
-#define APP_TX_DATA_SIZE  2048
-
+#define APP_RX_DATA_SIZE  32//2048
+#define APP_TX_DATA_SIZE  32//2048
+extern int usb_send(uint8_t *buf, int len);
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 USBD_CDC_LineCodingTypeDef LineCoding =
