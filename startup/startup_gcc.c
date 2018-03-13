@@ -47,12 +47,7 @@ extern void SVC_Handler(void);
 extern void DebugMon_Handler(void);
 extern void PendSV_Handler(void);
 extern void SysTick_Handler(void);
-extern void USBWakeUp_IRQHandler(void);
-extern void USB_LP_CAN_RX0_IRQHandler(void);
-extern void USARTx_IRQHandler(void);
-extern void SPI3_IRQHandler(void);
-extern void USART1_IRQHandler(void);
-
+extern void USB_IRQHandler(void);
 //*****************************************************************************
 //
 // The entry point for the application.
@@ -76,8 +71,8 @@ static uint32_t pui32Stack[128];
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) =
 {
-  (void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
-   // The initial stack pointer
+	(void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
+	// The initial stack pointer
 	ResetISR, 			//Reset_Handler
 	NMI_Handler, 		//	NMI_Handler
 	HardFault_Handler, 	//	HardFault_Handler
@@ -126,8 +121,8 @@ void (* const g_pfnVectors[])(void) =
 	IntDefaultHandler              ,//USART2
 	0                              ,//Reserved
 	0                              ,//Reserved
-	IntDefaultHandler                 ,//USB
-  	BootRAM
+	USB_IRQHandler                 ,//USB
+	BootRAM
 };
 
 //*****************************************************************************
